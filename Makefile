@@ -12,7 +12,7 @@
 
 NAME = minishell
 
-SRC = main.c minishell.c get_info.c
+SRC = main.c minishell.c get_info.c free.c
 
 OBJ = $(SRC:.c=.o)
 

@@ -12,20 +12,23 @@
 
 #include "minishell.h"
 
-void	copy_env(char **env, char **dst)
+int		copy_env(char **env, t_minfo *info)
 {
 	int		i;
 
 	i = 0;
-	while (*env++)
+	while (env[i])
 		i++;
-	ft_printf("env line toal is %d\n", i);
-	dst = (char**)malloc(sizeof(char*) * (i + 1));
-	if (!dst)
-		return (NULL);
-	while (*env++)
-		*dst++ = ft_strdup(*env);//..
-	*dst = NULL;//////////////////..............segfault somewherre
+	if (!(info->env = (char**)malloc(sizeof(char*) * (i + 1))))
+		return (1);
+	i = 0;
+	while (env[i])
+	{
+		info->env[i] = ft_strdup(env[i]);//..
+		i++;
+	}
+	info->env[i] = NULL;
+	return (0);
 }
 
 void	add_cmd(char *pre, char *cmd, char **path)
@@ -62,28 +65,48 @@ void	handle_env_path(t_minfo *info)
 	while (info->env[i])
 	{
 		if (!ft_strncmp(info->env[i], "PATH", 4))
-			info->env_path = ft_strsub(info->env[i], 5, ((int)ft_strlen(info->env[i]) - 4));//..
+			info->env_path = ft_strsub(info->env[i], 5, ((int)ft_strlen(info->env[i]) - 5));//..
 		if (!ft_strncmp(info->env[i], "HOME", 4))
-			info->home = ft_strsub(info->env[i], 5, ((int)ft_strlen(info->env[i]) - 4));//..
+			info->home = ft_strsub(info->env[i], 5, ((int)ft_strlen(info->env[i]) - 5));//..
 		i++;
 	}
-	info->pre_path = ft_strsplit(info->env_path, ':');
+	info->pre_path = ft_strsplit(info->env_path, ':');//..
 	ck_cmd(info);
+}
+
+int		get_av(char **av, t_minfo *info)
+{
+	int 	i;
+	int		j;
+
+	i = 1;
+	j = 0;
+	if (!(info->av = (char**)malloc(sizeof(char*) * MAX_PATH_LENGTH)))
+		return (1);
+	while (av[i])
+	{
+		// ft_printf("%s\n", av[i]);
+		info->av[j] = ft_strdup(av[i]);//..
+		i++;
+		j++;
+	}
+	info->av[j] = NULL;
+	return (0);
 }
 
 int		get_info(int ac, char **av, char **env, t_minfo *info)
 {
-	if (!(info->av = (char**)malloc(sizeof(char*))))
-		return (1);
+	// if (!(info->av = (char**)malloc(sizeof(char*) * MAX_PATH_LENGTH)))
+	// 	return (1);
 	if (!info)
 		return (1);
 	info->ac = ac;
-	copy_env(env, info->env);
-	while (*++av)
-		*(info->av)++ = ft_strdup(*av);//..
-	*(info->av) = NULL;
+	if (copy_env(env, info))
+		return (1);
+	if (get_av(av, info))
+		return (1);
 	if (info->av[0])
-		info->cmd = ft_strdup(av[0]);//..
+		info->cmd = ft_strdup(info->av[0]);//..
 	else
 		info->cmd = NULL;
 	if (env && info->env)
@@ -92,3 +115,4 @@ int		get_info(int ac, char **av, char **env, t_minfo *info)
 		return (1);
 	return (0);
 }
+

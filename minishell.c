@@ -19,17 +19,10 @@
 //if not, display error
 //cleanup memory
 
-// char		*get_cmd_path(t_minfo *info)
-// {
-// 	char *cmd_path;
-
-// 	cmd_path = (char*)malloc(sizeof(char) * )
-
-// 	return (cmd_path);
-// }
 
 char	*ck_buildin_cmd(t_minfo *info)
 {
+	ft_printf("hello, %s\n", info->cmd);
 	if (!ft_strcmp(info->cmd, "echo"))
 		info->bcmd = ft_strdup("echo");//...
 	else if (!ft_strcmp(info->cmd, "cd"))
@@ -50,10 +43,11 @@ int		minishell(t_minfo *info)
 	pid_t	pid;
 	int		r;
 
-	while(!ft_strcmp(info->cmd, "exit"))
+	ft_printf("hello\n");
+	while(ft_strcmp(info->cmd, "exit"))
 	{
 		if (ck_buildin_cmd(info))
-			printf("print buildin cmd");
+			printf("print buildin cmd\n");
 		else if (info->cmd_path)
 		{
 			pid = fork();

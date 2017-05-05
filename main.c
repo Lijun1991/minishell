@@ -19,7 +19,7 @@ int main(int argc, char **argv, char **env)
 	ft_memset(&info, 0, sizeof(t_minfo));
 	if (get_info(argc, argv, env, &info))
 	{
-		ft_fprintf(2, "error");
+		ft_fprintf(2, "error\n");
 		return (1);
 	}
 	minishell(&info);

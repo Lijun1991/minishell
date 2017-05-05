@@ -39,8 +39,11 @@ int		get_info(int ac, char **av, char **env, t_minfo *info);
 void	handle_env_path(t_minfo *info);
 void	ck_cmd(t_minfo *info);
 void	add_cmd(char *pre, char *cmd, char **path);
-char	**copy_env(char **env);
+int		copy_env(char **env, t_minfo *info);
+int		get_av(char **av, t_minfo *info);
 
 int		minishell(t_minfo *info);
 char	*ck_buildin_cmd(t_minfo *info);
+
+void	deep_free(char **dst);
 #endif
