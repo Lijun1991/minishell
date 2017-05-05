@@ -16,8 +16,11 @@ int main(int argc, char **argv, char **env)
 {
 	t_minfo		info;
 
-	(void)argc;
-	get_info(argv, env, info);
-	minishell(argv, &info);
-	return (0);
+	ft_memset(&info, 0, sizeof(t_minfo));
+	if (get_info(argc, argv, env, &info))
+	{
+		ft_fprintf(2, "error");
+		return (1);
+	}
+	minishell(&info);
 }

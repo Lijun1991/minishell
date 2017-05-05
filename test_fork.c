@@ -19,7 +19,7 @@ int		main(int argc, char **argv, char **env)
 	int		i;
 	pid_t	pid;
 	int		r;
-	char	*av[] = {"/bin/cat", argv[1], NULL};//"/bin/ls", "-l", "haa",
+	char	*av[] = {"ls", argv[1], argv[2], NULL};//"/bin/ls", "-l", "haa",
 
 	r = -100;
 	i = 0;
@@ -28,7 +28,7 @@ int		main(int argc, char **argv, char **env)
 	{
 		i = 10;
 		printf("I'm the child! i=%d\n", i);
-		execve("/bin/cat", av, env);
+		execve("/bin/ls", av, env);
 		printf("Something terrible happened.\n");
 		return (r);
 		// exit(1);

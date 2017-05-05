@@ -17,12 +17,30 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include "./libft/libft.h"
+# include <sys/stat.h>
+
+# define MAX_PATH_LENGTH 4096
 
 typedef struct	s_minfo
 {
 	char	**env;
-	// char	*cmd;
-	// char	*arg;
+	char	*home;
+	char	*env_path;
+	char	**pre_path;//
+
+	char	**av;
+	int		ac;
+	char	*cmd;//
+	char	*cmd_path;//
+	char	*bcmd;
 }				t_minfo;
 
+int		get_info(int ac, char **av, char **env, t_minfo *info);
+void	handle_env_path(t_minfo *info);
+void	ck_cmd(t_minfo *info);
+void	add_cmd(char *pre, char *cmd, char **path);
+char	**copy_env(char **env);
+
+int		minishell(t_minfo *info);
+char	*ck_buildin_cmd(t_minfo *info);
 #endif
