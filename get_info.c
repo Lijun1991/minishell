@@ -85,7 +85,6 @@ int		get_av(char **av, t_minfo *info)
 		return (1);
 	while (av[i])
 	{
-		// ft_printf("%s\n", av[i]);
 		info->av[j] = ft_strdup(av[i]);//..
 		i++;
 		j++;
@@ -96,8 +95,7 @@ int		get_av(char **av, t_minfo *info)
 
 int		get_info(int ac, char **av, char **env, t_minfo *info)
 {
-	// if (!(info->av = (char**)malloc(sizeof(char*) * MAX_PATH_LENGTH)))
-	// 	return (1);
+
 	if (!info)
 		return (1);
 	info->ac = ac;
@@ -108,7 +106,7 @@ int		get_info(int ac, char **av, char **env, t_minfo *info)
 	if (info->av[0])
 		info->cmd = ft_strdup(info->av[0]);//..
 	else
-		info->cmd = NULL;
+		info->cmd = "";
 	if (env && info->env)
 		handle_env_path(info);
 	else

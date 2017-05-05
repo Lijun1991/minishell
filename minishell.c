@@ -22,7 +22,6 @@
 
 char	*ck_buildin_cmd(t_minfo *info)
 {
-	ft_printf("hello, %s\n", info->cmd);
 	if (!ft_strcmp(info->cmd, "echo"))
 		info->bcmd = ft_strdup("echo");//...
 	else if (!ft_strcmp(info->cmd, "cd"))
@@ -35,7 +34,7 @@ char	*ck_buildin_cmd(t_minfo *info)
 		info->bcmd = ft_strdup("env");//..
 	else
 		return (NULL);
-	return (info->bcmd);
+	return (info->bcmd); 
 }
 
 int		minishell(t_minfo *info)
@@ -43,42 +42,36 @@ int		minishell(t_minfo *info)
 	pid_t	pid;
 	int		r;
 
-	ft_printf("hello\n");
-	while(ft_strcmp(info->cmd, "exit"))
+	r = -10;
+	if (!ft_strncmp(info->cmd, "exit", 4))
+		exit(1);
+	while(ft_strncmp(info->cmd, "exit", 4))
 	{
 		if (ck_buildin_cmd(info))
 			printf("print buildin cmd\n");
 		else if (info->cmd_path)
 		{
+			ft_printf("$> %s\n", info->cmd);
 			pid = fork();
 			if (pid == 0)
 			{
-				if (!info->cmd)
-				{
-					printf("hahah\n");
-					return (r);
-				}
-				printf("I'm the baby!");
 				execve(info->cmd_path, info->av, info->env);
-				printf("Something terrible happened.\n");
+				// printf("Something terrible happened.\n");
 				return (r);
 			}
 			else if (pid > 0)
 			{
 				wait(&r);
-				printf("I'm the parent! Child returned with %d status\n", r);
+				break ;
 			}
 			else
 			{
 				ft_printf("Rest in peace.\n");
-				exit(1);
+				exit (1);
 			}
-			ft_printf("Exit program!");
 		}
 		else
-		{
 			ft_printf("wrong commmands");
-		}
 	}
 	return (0);
 }

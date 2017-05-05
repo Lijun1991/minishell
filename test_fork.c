@@ -27,22 +27,22 @@ int		main(int argc, char **argv, char **env)
 	if (pid == 0)
 	{
 		i = 10;
-		printf("I'm the child! i=%d\n", i);
+		// printf("I'm the child! i=%d\n", i);
 		execve("/bin/ls", av, env);
-		printf("Something terrible happened.\n");
+		ft_printf("Something terrible happened.\n");
 		return (r);
 		// exit(1);
 	}
 	else if (pid > 0)
 	{
 		wait(&r);
-		i = 42;
-		printf("I'm the parent!i=%d\nChild returned with %d status\n", i, r);
+		// i = 42;
+		// printf("I'm the parent!i=%d\nChild returned with %d status\n", i, r);
 	}
 	else
 	{
 		printf("Rest in peace.\n");
 		exit(1);
 	}
-	printf("Exit program! i=%d\n", i);
+	// printf("Exit program! i=%d\n", i);
 }
