@@ -74,24 +74,6 @@ void	handle_env_path(t_minfo *info)
 	ck_cmd(info);
 }
 
-int		get_av(char **av, t_minfo *info)
-{
-	int 	i;
-	int		j;
-
-	i = 1;
-	j = 0;
-	if (!(info->av = (char**)malloc(sizeof(char*) * MAX_PATH_LENGTH)))
-		return (1);
-	while (av[i])
-	{
-		info->av[j] = ft_strdup(av[i]);//..
-		i++;
-		j++;
-	}
-	info->av[j] = NULL;
-	return (0);
-}
 
 int		get_info(int ac, char **av, char **env, t_minfo *info)
 {
@@ -103,10 +85,6 @@ int		get_info(int ac, char **av, char **env, t_minfo *info)
 		return (1);
 	if (get_av(av, info))
 		return (1);
-	if (info->av[0])
-		info->cmd = ft_strdup(info->av[0]);//..
-	else
-		info->cmd = "";
 	if (env && info->env)
 		handle_env_path(info);
 	else

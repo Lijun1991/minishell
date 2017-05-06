@@ -16,10 +16,10 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include "./libft/libft.h"
+# include "libft.h"
 # include <sys/stat.h>
-
 # define MAX_PATH_LENGTH 4096
+# define WHITE_SPACE(a) (a == ' ' || a == '\t' || a == '\v' || a == '\r')
 
 typedef struct	s_minfo
 {
@@ -28,7 +28,7 @@ typedef struct	s_minfo
 	char	*env_path;
 	char	**pre_path;//
 
-	char	**av;
+	char	**av;//from input line
 	int		ac;
 	char	*cmd;//
 	char	*cmd_path;//
@@ -40,10 +40,22 @@ void	handle_env_path(t_minfo *info);
 void	ck_cmd(t_minfo *info);
 void	add_cmd(char *pre, char *cmd, char **path);
 int		copy_env(char **env, t_minfo *info);
-int		get_av(char **av, t_minfo *info);
 
 int		minishell(t_minfo *info);
 char	*ck_buildin_cmd(t_minfo *info);
 
 void	deep_free(char **dst);
+
+int		get_av(char **av, t_minfo *info);
+void	parse_line(t_minfo *info, char *line);
+int		line_wordcount(char *str);
+char	**line_split(char const *s);
+
 #endif
+
+// this is  some   test with "quoted text  nside it"   blablabla
+// 00this0is00some000test0with0"quoted text  nside it"000blablabla
+
+// ~ -> 
+// echo ~	
+//c == ' ' || line[i] == '\t' || line[i] == '\v' || line[i] == '\r'

@@ -34,7 +34,8 @@ SRC = ft_atoi.c ft_itoa.c ft_bzero.c \
 	print_char_conversion.c print_invalid_get_info.c print_nbr_helper.c \
 	print_nbr_str.c print_number.c print_number_conversion.c print_string.c \
 	print_wide_string.c print_wstr_helper.c\
-	ft_fprintf.c print_fprintf_helper.c
+	ft_fprintf.c print_fprintf_helper.c\
+	get_next_line.c
 
 
 OBJ = $(SRC:.c=.o)
@@ -42,7 +43,7 @@ OBJ = $(SRC:.c=.o)
 all: $(NAME)
 
 $(NAME):
-	gcc -Wall -Wextra -Werror -c $(SRC)
+	gcc -Wall -Wextra -Werror -g -c $(SRC)
 	ar rc $(NAME) $(OBJ)
 	ranlib $(NAME)
 

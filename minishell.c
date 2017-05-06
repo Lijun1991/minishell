@@ -41,22 +41,23 @@ int		minishell(t_minfo *info)
 {
 	pid_t	pid;
 	int		r;
+	char	*line;
 
 	r = -10;
-	if (!ft_strncmp(info->cmd, "exit", 4))
-		exit(1);
-	while(ft_strncmp(info->cmd, "exit", 4))
+	while(1)
 	{
+		get_next_line(0, &line);
+		parse_line(info, line);
 		if (ck_buildin_cmd(info))
 			printf("print buildin cmd\n");
 		else if (info->cmd_path)
 		{
-			ft_printf("$> %s\n", info->cmd);
+			ft_printf("$> %s\n", "hello");
 			pid = fork();
 			if (pid == 0)
 			{
 				execve(info->cmd_path, info->av, info->env);
-				// printf("Something terrible happened.\n");
+				printf("Something terrible happened.\n");
 				return (r);
 			}
 			else if (pid > 0)
@@ -72,6 +73,8 @@ int		minishell(t_minfo *info)
 		}
 		else
 			ft_printf("wrong commmands");
+		if (!ft_strncmp(info->cmd, "exit ", 5))
+			exit(1);
 	}
 	return (0);
 }

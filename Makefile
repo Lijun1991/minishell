@@ -12,19 +12,20 @@
 
 NAME = minishell
 
-SRC = main.c minishell.c get_info.c free.c
+SRC = main.c minishell.c get_info.c free.c parse_line.c
 
 OBJ = $(SRC:.c=.o)
 
-OBJLIB = ./libft/*.o
 
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g -Ilibft
 
 $(NAME): $(OBJ)
 	make -C ./libft
 	gcc $(CFLAGS) -o $(NAME) $(OBJ) -L libft/ -lft
 
 all: $(NAME)
+
+$(OBJ): minishell.h
 
 clean:
 	make -C ./libft clean

@@ -22,6 +22,10 @@
 # include <locale.h>
 # include <wchar.h>
 
+# define BUFF_SIZE 1024
+# define MAX_FD 1000
+# include <fcntl.h>
+
 # define RED "\e[31;3m"
 # define BLUE "\e[34;3m"
 # define GREE "\e[32;3m"
@@ -258,5 +262,7 @@ unsigned long long	number_to_print_unsigned(t_info *conver_info, \
 	va_list args);
 void				norm_print_no_precision(t_info *conver_info, \
 	char *str, int len);
+
+int					get_next_line(const int fd, char **line);
 
 #endif
