@@ -71,7 +71,6 @@ void	handle_env_path(t_minfo *info)
 		i++;
 	}
 	info->pre_path = ft_strsplit(info->env_path, ':');//..
-	//ck_cmd(info);
 }
 
 
@@ -83,10 +82,6 @@ int		get_info(int ac, char **av, char **env, t_minfo *info)
 	info->ac = ac;
 	if (copy_env(env, info))
 		return (1);
-	/*
-	if (get_av(av, info))
-		return (1);
-	*/
 	if (av)
 		;
 	if (env && info->env)

@@ -12,26 +12,6 @@
 
 #include "minishell.h"
 
-/*
-int		get_av(char **av, t_minfo *info)
-{
-	int 	i;
-	int		j;
-
-	i = 1;
-	j = 0;
-	if (!(info->av = (char**)malloc(sizeof(char*) * MAX_PATH_LENGTH)))
-		return (1);
-	while (av[i])
-	{
-		info->av[j] = ft_strdup(av[i]);//..
-		i++;
-		j++;
-	}
-	info->av[j] = NULL;
-	return (0);
-}
-*/
 char	**handle_qoated(char *line)
 {
 	char **av;
@@ -44,7 +24,6 @@ char	**handle_qoated(char *line)
 	{
 		if (**tmp == '"')
 			refill_space(*tmp);
-		// ft_printf("av is %s\n", *(*av)++);
 		tmp++;
 	}
 	return (av);
@@ -58,12 +37,6 @@ void	parse_line(t_minfo *info, char *line)
 	av = handle_qoated(line);
 
 	info->av = av;
-	//ft_printf("av[0] is %s\n", av[0]);
-	//if (av[1])
-	//	get_av(av, info);
-	//ft_printf("happened.\n");
-	// ft_printf("info->cmd is %s, and path is %s\n", info->cmd, info->cmd_path);
-	
 	if (info->av[0])
 		info->cmd = ft_strdup(info->av[0]);//..
 	else
