@@ -19,7 +19,7 @@
 # include "libft.h"
 # include <sys/stat.h>
 # define MAX_PATH_LENGTH 4096
-# define WHITE_SPACE(a) (a == ' ' || a == '\t' || a == '\v' || a == '\r')
+// # define WHITE_SPACE(a) (a == ' ' || a == '\t' || a == '\v' || a == '\r')
 
 typedef struct	s_minfo
 {
@@ -35,21 +35,34 @@ typedef struct	s_minfo
 	char	*bcmd;
 }				t_minfo;
 
+
+//get_info.c
 int		get_info(int ac, char **av, char **env, t_minfo *info);
 void	handle_env_path(t_minfo *info);
 void	ck_cmd(t_minfo *info);
 void	add_cmd(char *pre, char *cmd, char **path);
 int		copy_env(char **env, t_minfo *info);
 
+
+//minishell.c
 int		minishell(t_minfo *info);
 char	*ck_buildin_cmd(t_minfo *info);
 
+
+//free.c
 void	deep_free(char **dst);
 
+
+//parse_line.c
 int		get_av(char **av, t_minfo *info);
 void	parse_line(t_minfo *info, char *line);
-int		line_wordcount(char *str);
-char	**line_split(char const *s);
+char	**handle_qoated(char *line);
+
+//handle_quotes.c
+void	change_space(char *line);
+void	refill_space(char *av);
+int			line_wordcount(char *str);
+char		**line_split(char const *s);
 
 #endif
 

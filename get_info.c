@@ -6,7 +6,7 @@
 /*   By: lwang <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 00:46:29 by lwang             #+#    #+#             */
-/*   Updated: 2017/05/04 00:46:34 by lwang            ###   ########.fr       */
+/*   Updated: 2017/05/08 00:30:31 by lwang            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	handle_env_path(t_minfo *info)
 		i++;
 	}
 	info->pre_path = ft_strsplit(info->env_path, ':');//..
-	ck_cmd(info);
+	//ck_cmd(info);
 }
 
 
@@ -83,8 +83,12 @@ int		get_info(int ac, char **av, char **env, t_minfo *info)
 	info->ac = ac;
 	if (copy_env(env, info))
 		return (1);
+	/*
 	if (get_av(av, info))
 		return (1);
+	*/
+	if (av)
+		;
 	if (env && info->env)
 		handle_env_path(info);
 	else
