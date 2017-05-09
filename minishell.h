@@ -26,10 +26,9 @@ typedef struct	s_minfo
 	char	**env;
 	char	*home;
 	char	*env_path;
-	char	**pre_path;//
+	char	**pre_path;//from env path:
 
 	char	**av;//from input line
-	int		ac;
 	char	*cmd;//
 	char	*cmd_path;//
 	char	*bcmd;
@@ -37,7 +36,7 @@ typedef struct	s_minfo
 
 
 //get_info.c
-int		get_info(int ac, char **av, char **env, t_minfo *info);
+int		get_info(char **av, char **env, t_minfo *info);
 void	handle_env_path(t_minfo *info);
 void	ck_cmd(t_minfo *info);
 void	add_cmd(char *pre, char *cmd, char **path);
@@ -51,18 +50,18 @@ char	*ck_buildin_cmd(t_minfo *info);
 
 //free.c
 void	deep_free(char **dst);
+void	free_everything(t_minfo *info, char *line);
 
 
 //parse_line.c
-int		get_av(char **av, t_minfo *info);
 void	parse_line(t_minfo *info, char *line);
 char	**handle_qoated(char *line);
 
 //handle_quotes.c
 void	change_space(char *line);
-void	refill_space(char *av);
-int			line_wordcount(char *str);
-char		**line_split(char const *s);
+void	refill_space(char **av);
+int		line_wordcount(char *str);
+char	**line_split(char const *s);
 
 #endif
 

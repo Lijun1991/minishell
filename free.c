@@ -24,3 +24,17 @@ void	deep_free(char **dst)
 	}
 	free(dst);
 }
+
+void	free_everything(t_minfo *info, char *line)
+{
+	deep_free(info->av);
+	info->av = NULL;
+	free(info->cmd);
+	info->cmd = NULL;
+	free(info->cmd_path);
+	info->cmd_path = NULL;
+	free(info->bcmd);
+	info->bcmd = NULL;
+	free(line);
+	line = NULL;
+}

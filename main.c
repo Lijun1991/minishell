@@ -16,8 +16,9 @@ int main(int argc, char **argv, char **env)
 {
 	t_minfo		info;
 
+	(void)argc;
 	ft_memset(&info, 0, sizeof(t_minfo));
-	if (get_info(argc, argv, env, &info))
+	if (get_info(argv, env, &info))
 	{
 		ft_fprintf(2, "error\n");
 		return (1);

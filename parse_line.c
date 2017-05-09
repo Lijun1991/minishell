@@ -23,7 +23,7 @@ char	**handle_qoated(char *line)
 	while (*tmp)
 	{
 		if (**tmp == '"')
-			refill_space(*tmp);
+			refill_space(tmp);
 		tmp++;
 	}
 	return (av);
@@ -40,7 +40,7 @@ void	parse_line(t_minfo *info, char *line)
 	if (info->av[0])
 		info->cmd = ft_strdup(info->av[0]);//..
 	else
-		info->cmd = "";
+		info->cmd = ft_strdup("");
 	ck_cmd(info);
 }
 

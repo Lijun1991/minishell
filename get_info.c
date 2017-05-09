@@ -74,16 +74,14 @@ void	handle_env_path(t_minfo *info)
 }
 
 
-int		get_info(int ac, char **av, char **env, t_minfo *info)
+int		get_info(char **av, char **env, t_minfo *info)
 {
-
 	if (!info)
 		return (1);
-	info->ac = ac;
+	if (av[1])
+		return (1);
 	if (copy_env(env, info))
 		return (1);
-	if (av)
-		;
 	if (env && info->env)
 		handle_env_path(info);
 	else

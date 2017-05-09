@@ -54,13 +54,15 @@ void	change_space(char *line)
 	}
 }
 
-void	refill_space(char *av)
+void	refill_space(char **tmp)
 {
 	int i;
+	char	*p2;
+	char	*av;
 
-	i = 0;
-	while (av[i])
-	{
+	av = *tmp;
+	i = -1;
+	while (av[++i])
 		if (av[i] == 01)
 			av[i] = ' ';
 		else if (av[i] == 02)
@@ -69,7 +71,12 @@ void	refill_space(char *av)
 			av[i] = '\v';
 		else if (av[i] == 04)
 			av[i] = '\r';
-		i++;
+	if (av[0] == '"' && (p2 = ft_strchr(&av[1], '"')))
+	{
+		*p2 = '\0';
+		av = ft_strdup(av + 1);
+		free(*tmp);
+		*tmp = av;
 	}
 }
 
