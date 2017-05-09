@@ -13,7 +13,7 @@
 NAME = minishell
 
 SRC = main.c minishell.c get_info.c free.c parse_line.c handle_quotes.c\
-handle_buildin_cmd.c
+handle_buildin_cmd.c helper.c handle_env.c
 
 OBJ = $(SRC:.c=.o)
 

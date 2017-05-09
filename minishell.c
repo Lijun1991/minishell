@@ -29,9 +29,9 @@ int		ck_buildin_cmd(t_minfo *info)
 	else if (!ft_strcmp(info->cmd, "setenv"))
 		buitin_cmd_setenv(info);
 	else if (!ft_strcmp(info->cmd, "unsetenv"))
-		;
+		buitin_cmd_unsetenv(info);
 	else if (!ft_strcmp(info->cmd, "env"))
-		;
+		print_env(info);
 	else
 		return (0);
 	return (1); 
@@ -48,7 +48,6 @@ int		minishell(t_minfo *info)
 		ft_printf("$>");
 		get_next_line(0, &info->line);
 		parse_line(info);
-		// ft_printf("line is %s\n", info->av[1]);
 		if (ck_buildin_cmd(info))
 			;
 		else if (info->cmd_path)
@@ -56,10 +55,8 @@ int		minishell(t_minfo *info)
 			pid = fork();
 			if (pid == 0)
 			{
-				// ft_printf("hello\n");
 				execve(info->cmd_path, info->av, info->env);
 				exit(1);
-				// printf("Something terrible happened.\n");
 				return (r);
 			}
 			else if (pid > 0)
