@@ -36,6 +36,7 @@ void	add_cmd(char *pre, char *cmd, char **path)
 	char	*tmp;
 
 	tmp = ft_strjoin(pre, "/");
+	// ft_printf("pre is %s\nnew path is %s\n", pre, tmp);
 	*path = ft_strjoin(tmp, cmd);
 	free(tmp);
 }
@@ -65,12 +66,12 @@ void	handle_env_path(t_minfo *info)
 	while (info->env[i])
 	{
 		if (!ft_strncmp(info->env[i], "PATH", 4))
-			info->env_path = ft_strsub(info->env[i], 5, ((int)ft_strlen(info->env[i]) - 5));//..
+			info->env_path = ft_strsub(info->env[i], 5, ((int)ft_strlen(info->env[i]) - 5));
 		if (!ft_strncmp(info->env[i], "HOME", 4))
-			info->home = ft_strsub(info->env[i], 5, ((int)ft_strlen(info->env[i]) - 5));//..
+			info->home = ft_strsub(info->env[i], 5, ((int)ft_strlen(info->env[i]) - 5));
 		i++;
 	}
-	info->pre_path = ft_strsplit(info->env_path, ':');//..
+	info->pre_path = ft_strsplit(info->env_path, ':');
 }
 
 

@@ -20,43 +20,45 @@
 //cleanup memory
 
 
-char	*ck_buildin_cmd(t_minfo *info)
+int		ck_buildin_cmd(t_minfo *info)
 {
 	if (!ft_strcmp(info->cmd, "echo"))
-		info->bcmd = ft_strdup("echo");//...
+		buitin_cmd_echo(info);
 	else if (!ft_strcmp(info->cmd, "cd"))
-		info->bcmd = ft_strdup("cd");//..
+		buitin_cmd_cd(info);
 	else if (!ft_strcmp(info->cmd, "setenv"))
-		info->bcmd = ft_strdup("setenv");//..
+		buitin_cmd_setenv(info);
 	else if (!ft_strcmp(info->cmd, "unsetenv"))
-		info->bcmd = ft_strdup("unsetenv");//..
+		;
 	else if (!ft_strcmp(info->cmd, "env"))
-		info->bcmd = ft_strdup("env");//..
+		;
 	else
-		return (NULL);
-	return (info->bcmd); 
+		return (0);
+	return (1); 
 }
 
 int		minishell(t_minfo *info)
 {
 	pid_t	pid;
 	int		r;
-	char	*line;
 
 	r = -10;
 	while (1)
 	{
 		ft_printf("$>");
-		get_next_line(0, &line);
-		parse_line(info, line);
+		get_next_line(0, &info->line);
+		parse_line(info);
+		// ft_printf("line is %s\n", info->av[1]);
 		if (ck_buildin_cmd(info))
-			printf("print buildin cmd\n");
+			;
 		else if (info->cmd_path)
 		{
 			pid = fork();
 			if (pid == 0)
 			{
+				// ft_printf("hello\n");
 				execve(info->cmd_path, info->av, info->env);
+				exit(1);
 				// printf("Something terrible happened.\n");
 				return (r);
 			}
@@ -71,10 +73,13 @@ int		minishell(t_minfo *info)
 			}
 		}
 		else if (!ft_strncmp(info->cmd, "exit ", 4))
-			exit(1);
+		{
+			free_for_loop(info);
+			return (0);
+		}
 		else
 			ft_printf("wrong commmands\n");
-		free_everything(info, line);
+		free_for_loop(info);
 	}
 	return (0);
 }

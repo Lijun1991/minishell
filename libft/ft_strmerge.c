@@ -6,7 +6,7 @@
 /*   By: lwang <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/06 19:01:20 by lwang             #+#    #+#             */
-/*   Updated: 2017/05/05 15:02:04 by lwang            ###   ########.fr       */
+/*   Updated: 2017/05/08 20:03:57 by lwang            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ char	*ft_strmerge(char *a, char *b)
 	char *ret;
 
 	ret = ft_strjoin(a, b);
-	if (ft_strcmp(a, "") != 0)
-	{
+	// if (ft_strcmp(a, "") != 0)
+	// {
 		free(a);
-		a = NULL;
-	}
+	// 	a = NULL;
+	// }
 	//free(b);
 	return (ret);
 }

@@ -17,15 +17,17 @@ void	deep_free(char **dst)
 	int i;
 
 	i = 0;
-	while (dst[i])
-	{
-		free(dst[i]);
-		i++;
-	}
+	if (dst)
+		while (dst[i])
+		{
+			free(dst[i]);
+			i++;
+		}
 	free(dst);
+	dst = NULL;
 }
 
-void	free_everything(t_minfo *info, char *line)
+void	free_for_loop(t_minfo *info)
 {
 	deep_free(info->av);
 	info->av = NULL;
@@ -33,8 +35,24 @@ void	free_everything(t_minfo *info, char *line)
 	info->cmd = NULL;
 	free(info->cmd_path);
 	info->cmd_path = NULL;
-	free(info->bcmd);
-	info->bcmd = NULL;
-	free(line);
-	line = NULL;
+	free(info->line);
+	info->line = NULL;
+}
+
+void	free_everything(t_minfo *info)
+{
+	deep_free(info->av);
+	info->av = NULL;
+	free(info->cmd);
+	info->cmd = NULL;
+	free(info->cmd_path);
+	info->cmd_path = NULL;
+	deep_free(info->env);
+	free(info->home);
+	info->home = NULL;
+	free(info->env_path);
+	info->env_path = NULL;
+	deep_free(info->pre_path);
+	free(info->line);
+	// get_next_line(-42, NULL);
 }

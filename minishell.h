@@ -18,6 +18,7 @@
 # include <stdlib.h>
 # include "libft.h"
 # include <sys/stat.h>
+# include <dirent.h>
 # define MAX_PATH_LENGTH 4096
 // # define WHITE_SPACE(a) (a == ' ' || a == '\t' || a == '\v' || a == '\r')
 
@@ -31,7 +32,9 @@ typedef struct	s_minfo
 	char	**av;//from input line
 	char	*cmd;//
 	char	*cmd_path;//
-	char	*bcmd;
+
+	char	*cur_path;
+	char	*line;
 }				t_minfo;
 
 
@@ -43,23 +46,32 @@ void	add_cmd(char *pre, char *cmd, char **path);
 int		copy_env(char **env, t_minfo *info);
 
 
+//handle_buildin_cmd.c 
+void	buitin_cmd_echo(t_minfo *info);
+int		buitin_cmd_cd(t_minfo *info);
+void	buitin_cmd_setenv(t_minfo *info);
+void	buidin_setenv(t_minfo *info, const char *env_key, const char *env_value);
+
+
+
 //minishell.c
 int		minishell(t_minfo *info);
-char	*ck_buildin_cmd(t_minfo *info);
+int		ck_buildin_cmd(t_minfo *info);
 
 
 //free.c
 void	deep_free(char **dst);
-void	free_everything(t_minfo *info, char *line);
+void	free_for_loop(t_minfo *info);
+void	free_everything(t_minfo *info);
 
 
 //parse_line.c
-void	parse_line(t_minfo *info, char *line);
+void	parse_line(t_minfo *info);
 char	**handle_qoated(char *line);
 
 //handle_quotes.c
 void	change_space(char *line);
-void	refill_space(char **av);
+void	cut_quos_refill_space(char **av);
 int		line_wordcount(char *str);
 char	**line_split(char const *s);
 

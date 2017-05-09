@@ -24,4 +24,5 @@ int main(int argc, char **argv, char **env)
 		return (1);
 	}
 	minishell(&info);
+	free_everything(&info);
 }

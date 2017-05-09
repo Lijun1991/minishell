@@ -11,15 +11,54 @@
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+// int		main(int argc, char **argv, char **env)
+// {
+// 	int		i;
 
-int		main(int argc, char **argv, char **env)
+// 	i = 0;
+// 	while (env[i])
+// 	{
+// 		printf("%s\n", env[i]);
+// 		i++;
+// 	}
+// }
+
+char	*ft_strcjoin(const char *a, const char *b, char c)
 {
 	int		i;
+	int		j;
+	int		size;
+	char	*dst;
 
 	i = 0;
-	while (env[i])
+	j = 0;
+	if (!a || !b)
+		return (NULL);
+	size = strlen(a) + strlen(b);
+	dst = (char*)malloc(sizeof(char) * (size + 2));
+	if (!dst)
+		return (NULL);
+	while (a[i])
 	{
-		printf("%s\n", env[i]);
+		dst[i] = a[i];
 		i++;
 	}
+	dst[i] = c;
+	i++;
+	while (b[j])
+	{
+		dst[i + j] = b[j];
+		j++;
+	}
+	dst[i + j] = '\0';
+	return (dst);
+}
+
+
+int main(void)
+{
+	printf("%s\n", ft_strcjoin("123456", "lksdjfksdhf", '='));
+	return (0);
 }

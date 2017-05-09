@@ -142,6 +142,32 @@ void	change_space(char *line)
 	}
 }
 
+void	cut_quos_refill_space(char **tmp)
+{
+	int i;
+	char	*p2;
+	char	*av;
+
+	av = *tmp;
+	i = -1;
+	while (av[++i])
+		if (av[i] == 01)
+			av[i] = ' ';
+		else if (av[i] == 02)
+			av[i] = '\t';
+		else if (av[i] == 03)
+			av[i] = '\v';
+		else if (av[i] == 04)
+			av[i] = '\r';
+	if (av[0] == '"' && (p2 = ft_strchr(&av[1], '"')))
+	{
+		*p2 = '\0';
+		av = ft_strdup(av + 1);
+		free(*tmp);
+		*tmp = av;
+	}
+}
+
 void	refill_space(char *av)
 {
 	int i;
@@ -172,7 +198,8 @@ int main(void)
 	while (*av)
 	{
 		if (**av == '"')
-			refill_space(*av);
-		// ft_printf("%s\n", *av++);
+			cut_quos_refill_space(av);
+			//refill_space(*av);
+		ft_printf("%s\n", *av++);
 	}
 }

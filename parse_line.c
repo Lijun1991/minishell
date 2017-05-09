@@ -23,18 +23,18 @@ char	**handle_qoated(char *line)
 	while (*tmp)
 	{
 		if (**tmp == '"')
-			refill_space(tmp);
+			cut_quos_refill_space(tmp);
 		tmp++;
 	}
 	return (av);
 }
 
-void	parse_line(t_minfo *info, char *line)
+void	parse_line(t_minfo *info)
 {
 	char **av;
 
 	av = NULL;
-	av = handle_qoated(line);
+	av = handle_qoated(info->line);
 
 	info->av = av;
 	if (info->av[0])

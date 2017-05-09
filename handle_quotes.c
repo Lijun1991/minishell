@@ -42,19 +42,19 @@ void	change_space(char *line)
 		while (line[i] != '"' && line[i] != '\0')
 			i++;
 		start = i;
-		i++;
+		if (line[i] != '\0')
+			i++;
 		while (line[i] != '"' && line[i] != '\0')
 			i++;
 		end = i;
-		i++;
+		if (line[i] != '\0')
+			i++;
 		if (end != 0)
-		{
 			fill_space_helper(line, start, end);
-		}
 	}
 }
 
-void	refill_space(char **tmp)
+void	cut_quos_refill_space(char **tmp)
 {
 	int i;
 	char	*p2;
