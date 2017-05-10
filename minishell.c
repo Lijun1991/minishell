@@ -19,22 +19,26 @@
 //if not, display error
 //cleanup memory
 
+int		check_buildin(t_minfo *info)
+{
+	return (!ft_strcmp(info->cmd, "echo") || !ft_strcmp(info->cmd, "cd") ||
+		!ft_strcmp(info->cmd, "setenv") || !ft_strcmp(info->cmd, "unsetenv") ||
+		!ft_strcmp(info->cmd, "env"));
+}
 
 int		ck_buildin_cmd(t_minfo *info)
 {
 	if (!ft_strcmp(info->cmd, "echo"))
-		buitin_cmd_echo(info);
+		return (buitin_cmd_echo(info));
 	else if (!ft_strcmp(info->cmd, "cd"))
-		buitin_cmd_cd(info);
+		return (buitin_cmd_cd(info));
 	else if (!ft_strcmp(info->cmd, "setenv"))
-		buitin_cmd_setenv(info);
+		return (buitin_cmd_setenv(info));
 	else if (!ft_strcmp(info->cmd, "unsetenv"))
-		buitin_cmd_unsetenv(info);
+		return (buitin_cmd_unsetenv(info));
 	else if (!ft_strcmp(info->cmd, "env"))
-		print_env(info);
-	else
-		return (0);
-	return (1); 
+		return (print_env(info));
+	return (0);
 }
 
 int		minishell(t_minfo *info)
@@ -46,10 +50,14 @@ int		minishell(t_minfo *info)
 	while (1)
 	{
 		ft_printf("$>");
-		get_next_line(0, &info->line);
+		if (!get_next_line(0, &info->line))
+			break ;
 		parse_line(info);
-		if (ck_buildin_cmd(info))
-			;
+		if (check_buildin(info))
+		{
+			if (ck_buildin_cmd(info))
+				ft_fprintf(2, "error\n");
+		}
 		else if (info->cmd_path)
 		{
 			pid = fork();

@@ -41,7 +41,8 @@ void	free_for_loop(t_minfo *info)
 
 void	free_everything(t_minfo *info)
 {
-	deep_free(info->av);
+	if (info->av)
+		deep_free(info->av);
 	info->av = NULL;
 	free(info->cmd);
 	info->cmd = NULL;

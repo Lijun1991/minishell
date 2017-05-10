@@ -6,7 +6,7 @@
 /*   By: lwang <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/10 14:27:43 by lwang             #+#    #+#             */
-/*   Updated: 2016/10/20 17:37:38 by lwang            ###   ########.fr       */
+/*   Updated: 2017/05/09 15:02:52 by lwang            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ char		**ft_strsplit(char const *s, char c)
 	int		j;
 
 	if (!s)
-		return (0);
+		return (NULL);
 	dst = (char**)malloc(sizeof(char*) * (wordcount((char*)s, c) + 1));
 	if (!dst)
-		return (0);
+		return (NULL);
 	i = -1;
 	j = 0;
 	len = 0;

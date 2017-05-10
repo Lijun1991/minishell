@@ -47,15 +47,15 @@ int		copy_env(char **env, t_minfo *info);
 
 
 //handle_buildin_cmd.c 
-void	buitin_cmd_echo(t_minfo *info);
+int		buitin_cmd_echo(t_minfo *info);
 int		buitin_cmd_cd(t_minfo *info);
 
 
 //handle_env.c
-void	buitin_cmd_setenv(t_minfo *info);
+int		buitin_cmd_setenv(t_minfo *info);
 int		buitin_cmd_unsetenv(t_minfo *info);
-void	buidin_setenv(t_minfo *info, const char *env_key, const char *env_value);
-void	print_env(t_minfo *info);
+void		buidin_setenv(t_minfo *info, const char *env_key, const char *env_value);
+int		print_env(t_minfo *info);
 
 //helper.c
 char	*ft_strcjoin(const char *a, const char *b, char c);

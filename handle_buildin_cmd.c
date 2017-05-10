@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	buitin_cmd_echo(t_minfo *info)
+int		buitin_cmd_echo(t_minfo *info)
 {
 	int		i;
 
@@ -22,6 +22,7 @@ void	buitin_cmd_echo(t_minfo *info)
 		ft_printf(info->av[i + 1] ? "%s " : "%s\n", info->av[i]);
 		i++;
 	}
+	return (0);
 }
 
 
