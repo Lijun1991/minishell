@@ -50,6 +50,8 @@ int		get_cmd_path(t_minfo *info)
 		{
 			if (!ck_cmd(info))
 				return (1);
+			if (access(info->cmd, X_OK))
+				return (1);
 		}
 		else
 			return (1);

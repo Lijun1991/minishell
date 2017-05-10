@@ -59,7 +59,11 @@ int		exc_command(t_minfo *info)
 		exit(1);
 	}
 	else if (pid > 0)
+	{
 		wait(&r);
+		if (r)
+			ft_printf("cmd doesn't execve successfully\n");
+	}
 	else
 	{
 		ft_printf("Failed to fork process\n");
