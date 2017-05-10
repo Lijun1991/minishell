@@ -59,7 +59,7 @@ int		buitin_cmd_setenv(t_minfo *info)
 	if (info->av[2])
 		return (1);
 	tmp  = ft_strsplit(info->av[1], '=');
-	if (check_str(info->av[1], '=') || !tmp)
+	if (check_str(info->av[1], '=') || !tmp || !tmp[0])
 		return (1);
 	buidin_setenv(info, tmp[0], tmp[1]);
 	return (0);

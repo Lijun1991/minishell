@@ -62,7 +62,7 @@ int		exc_command(t_minfo *info)
 		wait(&r);
 	else
 	{
-		ft_printf("Rest in peace.\n");
+		ft_printf("Failed to fork process\n");
 		exit (1);
 	}
 	return (r);
