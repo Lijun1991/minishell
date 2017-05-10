@@ -30,22 +30,27 @@ int	buitin_cmd_cd(t_minfo *info)
 {
 	char	buf[MAX_PATH_LENGTH + 1];
 	char	*pwd;
+	struct stat	s;
 	int		err;
-
-	if (info->av[2])
-		ft_fprintf(2, "cd: string not in pwd: %s\n", info->av[1]);
+	char	*dir;
 
 	pwd = getcwd(buf, MAX_PATH_LENGTH);
-	if (!(err = access(info->av[1], X_OK | R_OK)))
+	dir = info->av[1] == NULL ? info->home : info->av[1];
+	err = stat(dir, &s);
+	if (err == -1)
+		ft_fprintf(2, "cd: no such file or directory: %s\n", dir);
+	else if (!S_ISDIR(s.st_mode))
+		ft_fprintf(2, "cd: not a directory: %s\n", dir);
+	else if (!(err = access(dir, X_OK | R_OK)))
 	{
-		if (!(err = chdir(info->av[1])))
+		if (!(err = chdir(dir)))
 		{
 			buidin_setenv(info, "OLDPWD", pwd);
 			buidin_setenv(info, "PWD", getcwd(buf, MAX_PATH_LENGTH));
 		}
 	}
 	else
-		ft_fprintf(2, "%s: Permission denied.\n", info->av[1]);
+		ft_fprintf(2, "%s: Permission denied.\n", dir);
 	return (err);
 }
 

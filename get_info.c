@@ -36,12 +36,11 @@ void	add_cmd(char *pre, char *cmd, char **path)
 	char	*tmp;
 
 	tmp = ft_strjoin(pre, "/");
-	// ft_printf("pre is %s\nnew path is %s\n", pre, tmp);
 	*path = ft_strjoin(tmp, cmd);
 	free(tmp);
 }
 
-void	ck_cmd(t_minfo *info)
+char	*ck_cmd(t_minfo *info)
 {
 	struct stat	sb;
 	int			i;
@@ -56,22 +55,32 @@ void	ck_cmd(t_minfo *info)
 		free(new_path);
 		i++;
 	}
+	return (info->cmd_path);
 }
 
-void	handle_env_path(t_minfo *info)
+int		handle_env_path(t_minfo *info)
 {
 	int		i;
+	int		find;
 
 	i = 0;
+	find = 0;
 	while (info->env[i])
 	{
 		if (!ft_strncmp(info->env[i], "PATH", 4))
+		{
+			find = 1;
 			info->env_path = ft_strsub(info->env[i], 5, ((int)ft_strlen(info->env[i]) - 5));
+		}
 		if (!ft_strncmp(info->env[i], "HOME", 4))
 			info->home = ft_strsub(info->env[i], 5, ((int)ft_strlen(info->env[i]) - 5));
 		i++;
 	}
-	info->pre_path = ft_strsplit(info->env_path, ':');
+	if (find)
+		info->pre_path = ft_strsplit(info->env_path, ':');
+	else
+		return (1);
+	return (0);
 }
 
 
@@ -82,10 +91,6 @@ int		get_info(char **av, char **env, t_minfo *info)
 	if (av[1])
 		return (1);
 	if (copy_env(env, info))
-		return (1);
-	if (env && info->env)
-		handle_env_path(info);
-	else
 		return (1);
 	return (0);
 }

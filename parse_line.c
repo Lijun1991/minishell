@@ -35,12 +35,25 @@ void	parse_line(t_minfo *info)
 
 	av = NULL;
 	av = handle_qoated(info->line);
-
 	info->av = av;
 	if (info->av[0])
-		info->cmd = ft_strdup(info->av[0]);//..
+		info->cmd = ft_strdup(info->av[0]);
 	else
 		info->cmd = ft_strdup("");
-	ck_cmd(info);
+}
+
+int		get_cmd_path(t_minfo *info)
+{
+	if (info->env)
+	{
+		if (!handle_env_path(info))
+		{
+			if (!ck_cmd(info))
+				return (1);
+		}
+		else
+			return (1);
+	}
+	return (0);
 }
 

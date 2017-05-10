@@ -23,7 +23,7 @@ int		check_buildin(t_minfo *info)
 {
 	return (!ft_strcmp(info->cmd, "echo") || !ft_strcmp(info->cmd, "cd") ||
 		!ft_strcmp(info->cmd, "setenv") || !ft_strcmp(info->cmd, "unsetenv") ||
-		!ft_strcmp(info->cmd, "env"));
+		!ft_strcmp(info->cmd, "env") || !ft_strcmp(info->cmd, "exit"));
 }
 
 int		ck_buildin_cmd(t_minfo *info)
@@ -38,6 +38,11 @@ int		ck_buildin_cmd(t_minfo *info)
 		return (buitin_cmd_unsetenv(info));
 	else if (!ft_strcmp(info->cmd, "env"))
 		return (print_env(info));
+	else if (!ft_strcmp(info->cmd, "exit"))
+	{
+		free_everything(info);
+		exit(0);
+	}
 	return (0);
 }
 
@@ -56,16 +61,15 @@ int		minishell(t_minfo *info)
 		if (check_buildin(info))
 		{
 			if (ck_buildin_cmd(info))
-				ft_fprintf(2, "error\n");
+				;
 		}
-		else if (info->cmd_path)
+		else if (!get_cmd_path(info))
 		{
 			pid = fork();
 			if (pid == 0)
 			{
 				execve(info->cmd_path, info->av, info->env);
 				exit(1);
-				return (r);
 			}
 			else if (pid > 0)
 			{
@@ -77,13 +81,8 @@ int		minishell(t_minfo *info)
 				exit (1);
 			}
 		}
-		else if (!ft_strncmp(info->cmd, "exit ", 4))
-		{
-			free_for_loop(info);
-			return (0);
-		}
 		else
-			ft_printf("wrong commmands\n");
+			ft_fprintf(2, "minishell: commmand not found: %s\n", info->cmd);
 		free_for_loop(info);
 	}
 	return (0);

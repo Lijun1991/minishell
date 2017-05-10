@@ -40,8 +40,8 @@ typedef struct	s_minfo
 
 //get_info.c
 int		get_info(char **av, char **env, t_minfo *info);
-void	handle_env_path(t_minfo *info);
-void	ck_cmd(t_minfo *info);
+int		handle_env_path(t_minfo *info);
+char	*ck_cmd(t_minfo *info);
 void	add_cmd(char *pre, char *cmd, char **path);
 int		copy_env(char **env, t_minfo *info);
 
@@ -54,7 +54,7 @@ int		buitin_cmd_cd(t_minfo *info);
 //handle_env.c
 int		buitin_cmd_setenv(t_minfo *info);
 int		buitin_cmd_unsetenv(t_minfo *info);
-void		buidin_setenv(t_minfo *info, const char *env_key, const char *env_value);
+void	buidin_setenv(t_minfo *info, const char *env_key, const char *env_value);
 int		print_env(t_minfo *info);
 
 //helper.c
@@ -75,6 +75,7 @@ void	free_everything(t_minfo *info);
 //parse_line.c
 void	parse_line(t_minfo *info);
 char	**handle_qoated(char *line);
+int		get_cmd_path(t_minfo *info);
 
 //handle_quotes.c
 void	change_space(char *line);
