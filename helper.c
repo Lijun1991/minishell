@@ -42,3 +42,21 @@ char	*ft_strcjoin(const char *a, const char *b, char c)
 	dst[i + j] = '\0';
 	return (dst);
 }
+
+int		check_str(char *str, char c)
+{
+	int		i;
+	int		count;
+
+	i = 0;
+	count = 0;
+	while (str[i])
+	{
+		if (str[i] == c)
+			count++;
+		i++;
+	}
+	if (count != 1)
+		return (1);
+	return (0);
+}

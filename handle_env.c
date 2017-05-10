@@ -52,24 +52,6 @@ void	buidin_setenv(t_minfo *info, const char *env_key, const char *env_value)
 	info->env = new_env;
 }
 
-int		check_str(char *str, char c)
-{
-	int		i;
-	int		count;
-
-	i = 0;
-	count = 0;
-	while (str[i])
-	{
-		if (str[i] == c)
-			count++;
-		i++;
-	}
-	if (count != 1)
-		return (1);
-	return (0);
-}
-
 int		buitin_cmd_setenv(t_minfo *info)
 {
 	char **tmp;
@@ -123,8 +105,18 @@ int	buitin_cmd_unsetenv(t_minfo *info)
 int		print_env(t_minfo *info)
 {
 	int		i;
+	int		j;
+	char	**tmp;
 
 	i = 0;
+	j = 1;
+	tmp = NULL;
+	while (info->av[j])
+	{
+		tmp = ft_strsplit(info->av[j], '=');
+		buidin_setenv(info, tmp[0], tmp[1]);
+		j++;
+	}
 	while (info->env[i])
 	{
 		ft_printf("%s\n", info->env[i]);
@@ -132,3 +124,27 @@ int		print_env(t_minfo *info)
 	}
 	return (0);
 }
+
+int		buitin_cmd_env(t_minfo *info)
+{
+	int i;
+	char	**env;
+
+	//check if the last av = a commad
+	// if it does, copy av into execve with tne new env
+	//otherwise if its not command but a key=value
+	//just display that.
+
+	i = 0;
+	while (info->av[i])
+		i++;
+	// if 
+
+}
+
+
+
+
+
+
+

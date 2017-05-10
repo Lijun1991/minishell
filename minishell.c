@@ -37,7 +37,7 @@ int		ck_buildin_cmd(t_minfo *info)
 	else if (!ft_strcmp(info->cmd, "unsetenv"))
 		return (buitin_cmd_unsetenv(info));
 	else if (!ft_strcmp(info->cmd, "env"))
-		return (print_env(info));
+		return (buitin_cmd_env(info));//return (print_env(info));
 	else if (!ft_strcmp(info->cmd, "exit"))
 	{
 		free_everything(info);
@@ -46,12 +46,30 @@ int		ck_buildin_cmd(t_minfo *info)
 	return (0);
 }
 
-int		minishell(t_minfo *info)
+int		exc_command(t_minfo *info)
 {
 	pid_t	pid;
 	int		r;
 
 	r = -10;
+	pid = fork();
+	if (pid == 0)
+	{
+		execve(info->cmd_path, info->av, info->env);
+		exit(1);
+	}
+	else if (pid > 0)
+		wait(&r);
+	else
+	{
+		ft_printf("Rest in peace.\n");
+		exit (1);
+	}
+	return (r);
+}
+
+int		minishell(t_minfo *info)
+{
 	while (1)
 	{
 		ft_printf("$>");
@@ -64,23 +82,7 @@ int		minishell(t_minfo *info)
 				;
 		}
 		else if (!get_cmd_path(info))
-		{
-			pid = fork();
-			if (pid == 0)
-			{
-				execve(info->cmd_path, info->av, info->env);
-				exit(1);
-			}
-			else if (pid > 0)
-			{
-				wait(&r);
-			}
-			else
-			{
-				ft_printf("Rest in peace.\n");
-				exit (1);
-			}
-		}
+			exc_command(info);
 		else
 			ft_fprintf(2, "minishell: commmand not found: %s\n", info->cmd);
 		free_for_loop(info);

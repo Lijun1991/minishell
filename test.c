@@ -6,7 +6,7 @@
 /*   By: lwang <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 19:59:32 by lwang             #+#    #+#             */
-/*   Updated: 2017/05/03 20:00:44 by lwang            ###   ########.fr       */
+/*   Updated: 2017/05/09 22:52:27 by lwang            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,15 +69,16 @@
 
 ////test setenv & unsetenv
 
-int main(void)
+int main(int argc, char **argv, char **env)
 {
-	int ret;
+	int		i;
 
-	ret = setenv("USER", "thisislwang", 1);
-	if (ret)
+	i = 0;
+	printf("The env is:\n");
+	while (env[i])
 	{
-		return (0);
-		printf("error");
+		printf("%s\n", env[i]);
+		i++;
 	}
 }
 

@@ -59,11 +59,14 @@ int		print_env(t_minfo *info);
 
 //helper.c
 char	*ft_strcjoin(const char *a, const char *b, char c);
+int		check_str(char *str, char c);
 
 
 //minishell.c
 int		minishell(t_minfo *info);
 int		ck_buildin_cmd(t_minfo *info);
+int		exc_command(t_minfo *info);
+int		check_buildin(t_minfo *info);
 
 
 //free.c
