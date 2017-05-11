@@ -25,6 +25,7 @@
 typedef struct	s_minfo
 {
 	char	**env;
+	char	**cmd_env;
 	char	*home;
 	char	*env_path;
 	char	**pre_path;//from env path:
@@ -40,45 +41,44 @@ typedef struct	s_minfo
 
 //get_info.c
 int		get_info(char **av, char **env, t_minfo *info);
+int		copy_env(char **env, t_minfo *info);
+
+//get_cmd_path.c
 int		handle_env_path(t_minfo *info);
 char	*ck_cmd(t_minfo *info);
 void	add_cmd(char *pre, char *cmd, char **path);
-int		copy_env(char **env, t_minfo *info);
 
 
 //handle_buildin_cmd.c 
 int		buitin_cmd_echo(t_minfo *info);
 int		buitin_cmd_cd(t_minfo *info);
 
-
 //handle_env.c
 int		buitin_cmd_setenv(t_minfo *info);
 int		buitin_cmd_unsetenv(t_minfo *info);
 void	buidin_setenv(t_minfo *info, const char *env_key, const char *env_value);
 int		print_env(t_minfo *info);
+int		buitin_cmd_env(t_minfo *info);
 
 //helper.c
 char	*ft_strcjoin(const char *a, const char *b, char c);
 int		check_str(char *str, char c);
-
 
 //minishell.c
 int		minishell(t_minfo *info);
 int		ck_buildin_cmd(t_minfo *info);
 int		exc_command(t_minfo *info);
 int		check_buildin(t_minfo *info);
-
+int		get_cmd_path(t_minfo *info);
 
 //free.c
 void	deep_free(char **dst);
 void	free_for_loop(t_minfo *info);
 void	free_everything(t_minfo *info);
 
-
 //parse_line.c
 void	parse_line(t_minfo *info);
 char	**handle_qoated(char *line);
-int		get_cmd_path(t_minfo *info);
 
 //handle_quotes.c
 void	change_space(char *line);

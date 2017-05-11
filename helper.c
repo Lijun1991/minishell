@@ -46,17 +46,18 @@ char	*ft_strcjoin(const char *a, const char *b, char c)
 int		check_str(char *str, char c)
 {
 	int		i;
-	int		count;
+	char	*check;
 
 	i = 0;
-	count = 0;
-	while (str[i])
+	if (!(check = ft_strchr(str, c)))
 	{
-		if (str[i] == c)
-			count++;
-		i++;
-	}
-	if (count != 1)
+		ft_fprintf(2, "env: %s: No such file or directory\n", str);
 		return (1);
+	}
+	if (str[0] == c)
+	{	
+		ft_fprintf(2, "zsh: %s not found", check);
+		return (1);
+	}
 	return (0);
 }

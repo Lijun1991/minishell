@@ -29,14 +29,27 @@ void	deep_free(char **dst)
 
 void	free_for_loop(t_minfo *info)
 {
-	deep_free(info->av);
-	info->av = NULL;
-	free(info->cmd);
-	info->cmd = NULL;
-	free(info->cmd_path);
-	info->cmd_path = NULL;
-	free(info->line);
-	info->line = NULL;
+	if (info->av)
+	{
+		deep_free(info->av);
+		info->av = NULL;
+	}
+	if (info->cmd)
+	{
+		free(info->cmd);
+		info->cmd = NULL;
+	}
+	if (info->cmd_path)
+	{
+		free(info->cmd_path);
+		info->cmd_path = NULL;
+	}
+	if (info->line)
+	{
+		free(info->line);
+		info->line = NULL;	
+	}
+
 }
 
 void	free_everything(t_minfo *info)
@@ -54,6 +67,7 @@ void	free_everything(t_minfo *info)
 	free(info->env_path);
 	info->env_path = NULL;
 	deep_free(info->pre_path);
+
 	free(info->line);
 	// get_next_line(-42, NULL);
 }
