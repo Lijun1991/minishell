@@ -33,20 +33,24 @@ void	buitin_setenv(t_minfo *info, const char *env_key, const char *env_value)
 			find = 1;
 			free(info->env[i]);
 			info->env[i] = ft_strdup(new_env_kv);
+			free(new_env_kv);
 			return ;
 		}
 		i++;
 	}
 	if (!find)
 	{
-		new_env = (char**)malloc(sizeof(char*) * (i + 1));
+		new_env = (char**)malloc(sizeof(char*) * (i + 2));
 		i = 0;
 		while (info->env[i])
 		{
 			new_env[i] = ft_strdup(info->env[i]);
+			free(info->env[i]);
 			i++;
 		}
+		free(info->env);
 		new_env[i] = ft_strdup(new_env_kv);
+		free(new_env_kv);
 		new_env[++i] = NULL;
 	}
 	info->env = new_env;
@@ -60,8 +64,12 @@ int		buitin_cmd_setenv(t_minfo *info)
 		return (1);
 	tmp  = ft_strsplit(info->av[1], '=');
 	if (check_str(info->av[1], '=') || !tmp || !tmp[0])
+	{
+		deep_free(tmp);
 		return (1);
+	}
 	buitin_setenv(info, tmp[0], tmp[1]);
+	deep_free(tmp);
 	return (0);
 }
 
@@ -128,27 +136,6 @@ int		print_env(t_minfo *info)
 	return (0);
 }
 
-// static int		print_env_arg(t_minfo *info, int len)
-// {
-// 	char	**tmp;
-// 	int		i;
-// 	int		err;
-
-// 	i = 0;
-// 	err = 0;
-// 	while (info->av[i] && i < len)
-// 	{
-// 		// ft_printf("info->av[i] is %s\n", info->av[i]);
-// 		if ((err = check_str(info->av[i], '=')))
-// 			return (err);
-// 		tmp  = ft_strsplit(info->av[1], '=');
-// 		setenv_fuc(info->cmd_env, tmp[0], tmp[1]);
-// 		i++;
-// 	}
-// 	print_env(info);
-// 	return (0);
-// }
-
 int		buitin_cmd_env(t_minfo *info)
 {
 	int		i;
@@ -163,8 +150,6 @@ int		buitin_cmd_env(t_minfo *info)
 	err = 0;
 	while (info->av[len])
 		len++;
-	// ft_printf("len is %d\n", len);
-	info->cmd_env = NULL;
 	if (len == 1)
 		print_env(info);
 	else if (len > 1 && ft_strchr(info->av[len - 1], '/'))
@@ -181,7 +166,6 @@ int		buitin_cmd_env(t_minfo *info)
 		}
 		info->cmd_env[j] = NULL;
 
-		// ft_printf("last arg is %s\n", info->av[len - 1]);
 		err = stat(info->av[len - 1], &s);
 		if (err == -1)
 			ft_fprintf(2, "cd: no such file or directory: %s\n", info->av[len - 1]);

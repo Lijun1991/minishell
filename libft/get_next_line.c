@@ -12,12 +12,12 @@
 
 #include "libft.h"
 
-// static int	free_stdin(char **stock)
-// {
-// 	free(stock[0]);
-// 	stock[0] = NULL;
-// 	return (-1);
-// }
+static int	free_stdin(char **stock)
+{
+	free(stock[0]);
+	stock[0] = NULL;
+	return (-1);
+}
 
 int		check_stock_nl(char **stock, char **line, int fd)
 {
@@ -86,8 +86,8 @@ int		get_next_line(const int fd, char **line)
 	static char	*stock[MAX_FD];
 
 	if (fd == -42 || fd < 0 || fd > MAX_FD || line == NULL)
-		return (-1);
-		//return (fd == -42 ? free_stdin(stock) : -1);
+		//return (-1);
+		return (fd == -42 ? free_stdin(stock) : -1);
 	if (stock[fd] != NULL)
 		if (check_stock_nl(stock, line, fd) == 2)
 			return (1);

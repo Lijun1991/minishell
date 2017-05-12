@@ -55,7 +55,6 @@ int		exc_command(t_minfo *info)
 	pid = fork();
 	if (pid == 0)
 	{
-		// ft_printf("cmd_path is %s\n", info->cmd_path);
 		execve(info->cmd_path, info->cmd_env ? info->cmd_env : info->av, info->cmd_env ? info->cmd_env : info->env);
 		exit(1);
 	}
@@ -82,7 +81,6 @@ int		get_cmd_path(t_minfo *info)
 	err = 0;
 	if (ft_strchr(info->cmd, '/') && !(err = access(info->cmd, X_OK)))
 	{
-		ft_printf("hello2\n");
 		info->cmd_path = ft_strdup(info->cmd);
 		return (0);
 	}
@@ -94,10 +92,7 @@ int		get_cmd_path(t_minfo *info)
 			return (1);
 	}
 	else
-	{
-		ft_printf("hello\n");
 		return (1);
-	}
 	return (err);
 }
 

@@ -30,12 +30,16 @@ char	*ck_cmd(t_minfo *info)
 	i = 0;
 	while (info->pre_path[i])
 	{
+		// free(info->cmd_path);
+		// info->cmd_path = NULL;
 		add_cmd(info->pre_path[i], info->cmd, &new_path);
 		if (stat(new_path, &sb) != -1)
 			info->cmd_path = ft_strdup(new_path);
 		free(new_path);
 		i++;
 	}
+	// deep_free(info->pre_path);
+	// info->pre_path = NULL;
 	return (info->cmd_path);
 }
 
@@ -48,6 +52,10 @@ int		handle_env_path(t_minfo *info)
 	find = 0;
 	while (info->env[i])
 	{
+		free(info->home);
+		info->home = NULL;
+		// free(info->env_path);
+		// info->env_path = NULL;
 		if (!ft_strncmp(info->env[i], "PATH", 4))
 		{
 			find = 1;
@@ -58,10 +66,16 @@ int		handle_env_path(t_minfo *info)
 		i++;
 	}
 	if (find)
+	{
+		deep_free(info->pre_path);
 		info->pre_path = ft_strsplit(info->env_path, ':');
+		free(info->env_path);
+		info->env_path = NULL;
+	}
 	else
 	{
-		ft_printf("hello1");
+		// free(info->env_path);
+		// info->env_path = NULL;		
 		return (1);
 	}
 	return (0);
