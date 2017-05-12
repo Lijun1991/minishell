@@ -79,10 +79,19 @@ int		get_cmd_path(t_minfo *info)
 	//CHECK if info->cmd contains / then call the appropriate function
 	//otherwise do this:
 	err = 0;
-	if (ft_strchr(info->cmd, '/') && !(err = access(info->cmd, X_OK)))
+	if (ft_strchr(info->cmd, '/') )
 	{
 		info->cmd_path = ft_strdup(info->cmd);
-		return (0);
+		if (!access(info->cmd_path, X_OK))
+		{
+			// ft_printf("hello\n");
+			return (0);
+		}
+		else
+		{
+			ft_fprintf(2, "minishell: permission denied: %s\n", info->cmd);
+			return (0);
+		}
 	}
 	else if (info->env && !(err = handle_env_path(info)))
 	{
@@ -96,6 +105,28 @@ int		get_cmd_path(t_minfo *info)
 	return (err);
 }
 
+void	handle_prompt(int sign, t_minfo *info)
+{
+	char	buf[MAX_PATH_LENGTH + 1];
+	char	*pwd;
+
+	pwd = getcwd(buf, MAX_PATH_LENGTH);
+	if (sign)
+	{
+		if (!ft_strcmp(pwd, info->home))
+			ft_printf(RED"$~"CLN);
+		else
+			ft_printf(RED"$>"CLN);
+	}
+	else
+	{
+		if (!ft_strcmp(pwd, info->home))
+			ft_printf("$~");
+		else
+			ft_printf("$>");
+	}
+}
+
 int		minishell(t_minfo *info)
 {
 	int	sign;
@@ -103,10 +134,7 @@ int		minishell(t_minfo *info)
 	sign = 0;
 	while (1)
 	{
-		if (sign)
-			ft_printf(RED"$>"CLN);
-		else
-			ft_printf("$>");
+		handle_prompt(sign, info);
 		sign = 0;
 		if (!get_next_line(0, &info->line))
 			break ;

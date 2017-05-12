@@ -40,6 +40,7 @@ int		get_info(char **av, char **env, t_minfo *info)
 		return (1);
 	if (copy_env(env, info))
 		return (1);
+	handle_env_path(info);
 	return (0);
 }
 

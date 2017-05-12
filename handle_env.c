@@ -148,9 +148,16 @@ int		buitin_cmd_env(t_minfo *info)
 	len = 0;
 	j = 0;
 	err = 0;
+	handle_env_path(info);
+
+	if (!ft_strcmp(info->env_path, ""))
+	{
+		ft_fprintf(2, "minishell: command not found: %s\n", info->cmd);
+		return (1);
+	}
 	while (info->av[len])
 		len++;
-	if (len == 1)
+	if (len == 1 && ft_strcmp(info->env_path, ""))
 		print_env(info);
 	else if (len > 1 && ft_strchr(info->av[len - 1], '/'))
 	{

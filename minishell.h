@@ -34,8 +34,8 @@ typedef struct	s_minfo
 	char	*cmd;//
 	char	*cmd_path;//
 
-	char	*cur_path;
 	char	*line;
+	// int		find;//if there is env path
 }				t_minfo;
 
 

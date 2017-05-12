@@ -39,8 +39,6 @@ void	free_for_loop(t_minfo *info)
 	info->cmd_path = NULL;
 	free(info->line);
 	info->line = NULL;	
-	free(info->cur_path);
-	info->cur_path = NULL;
 }
 
 void	free_everything(t_minfo *info)
@@ -53,7 +51,6 @@ void	free_everything(t_minfo *info)
 	deep_free(info->av);
 	free(info->cmd);
 	free(info->cmd_path);
-	free(info->cur_path);
 	free(info->line);	
 	get_next_line(-42, NULL);
 }

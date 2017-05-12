@@ -36,6 +36,7 @@ int	buitin_cmd_cd(t_minfo *info)
 
 	pwd = getcwd(buf, MAX_PATH_LENGTH);
 	dir = info->av[1] == NULL ? info->home : info->av[1];
+
 	err = stat(dir, &s);
 	if (err == -1)
 		ft_fprintf(2, "cd: no such file or directory: %s\n", dir);
