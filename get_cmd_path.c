@@ -60,6 +60,9 @@ int		handle_env_path(t_minfo *info)
 	if (find)
 		info->pre_path = ft_strsplit(info->env_path, ':');
 	else
+	{
+		ft_printf("hello1");
 		return (1);
+	}
 	return (0);
 }

@@ -56,14 +56,14 @@ int		exc_command(t_minfo *info)
 	if (pid == 0)
 	{
 		// ft_printf("cmd_path is %s\n", info->cmd_path);
-		execve(info->cmd_path, info->av, info->cmd_env ? info->cmd_env : info->env);
+		execve(info->cmd_path, info->cmd_env ? info->cmd_env : info->av, info->cmd_env ? info->cmd_env : info->env);
 		exit(1);
 	}
 	else if (pid > 0)
 	{
 		wait(&r);
-		if (r)
-			ft_printf("cmd doesn't execve successfully\n");
+		// if (r)
+		// 	ft_printf("cmd doesn't execve successfully\n");
 	}
 	else
 	{
@@ -77,21 +77,27 @@ int		get_cmd_path(t_minfo *info)
 {
 	int	err;
 
+	//CHECK if info->cmd contains / then call the appropriate function
+	//otherwise do this:
 	err = 0;
-	if (access(info->cmd, X_OK) && info->env && !(err = handle_env_path(info)))
+	if (ft_strchr(info->cmd, '/') && !(err = access(info->cmd, X_OK)))
 	{
-		// ft_printf("hello1");
-		if (!ck_cmd(info))
-			return (0);
-	}
-	else if (!(err = access(info->cmd, X_OK)))
-	{
-		// ft_printf("hello2");
+		ft_printf("hello2\n");
 		info->cmd_path = ft_strdup(info->cmd);
 		return (0);
 	}
+	else if (info->env && !(err = handle_env_path(info)))
+	{
+		if (ck_cmd(info) != NULL)
+			return (0);
+		else
+			return (1);
+	}
 	else
+	{
+		ft_printf("hello\n");
 		return (1);
+	}
 	return (err);
 }
 
@@ -115,6 +121,8 @@ int		minishell(t_minfo *info)
 			if (ck_buildin_cmd(info))
 				sign = 1;
 		}
+		else if (!ft_strcmp(info->cmd, ""))
+			sign = 0;
 		else if (!get_cmd_path(info))
 		{
 			if (exc_command(info))

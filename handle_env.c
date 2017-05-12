@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	buidin_setenv(t_minfo *info, const char *env_key, const char *env_value)
+void	buitin_setenv(t_minfo *info, const char *env_key, const char *env_value)
 {
 	int		i;
 	char	*new_env_kv;
@@ -61,7 +61,7 @@ int		buitin_cmd_setenv(t_minfo *info)
 	tmp  = ft_strsplit(info->av[1], '=');
 	if (check_str(info->av[1], '=') || !tmp || !tmp[0])
 		return (1);
-	buidin_setenv(info, tmp[0], tmp[1]);
+	buitin_setenv(info, tmp[0], tmp[1]);
 	return (0);
 }
 
@@ -106,28 +106,47 @@ int		print_env(t_minfo *info)
 {
 	int		i;
 	int		j;
-	char	**tmp;
 
 	i = 0;
 	j = 1;
-	tmp = NULL;
-	while (info->env[i])
+	if (info->cmd_env)
 	{
-		if (info->cmd_env)
+		while (info->cmd_env[i])
+		{
 			ft_printf("%s\n", info->cmd_env[i]);
-		else
-			ft_printf("%s\n", info->env[i]);
-		i++;
+			i++;
+		}
+	}
+	else
+	{
+		while (info->env[i])
+		{
+				ft_printf("%s\n", info->env[i]);
+			i++;
+		}
 	}
 	return (0);
 }
 
-// int		check_last_arg(t_minfo *info, int len)
+// static int		print_env_arg(t_minfo *info, int len)
 // {
+// 	char	**tmp;
+// 	int		i;
 // 	int		err;
 
+// 	i = 0;
 // 	err = 0;
-// 	ft_strchr(info->av[len - 1], '/');
+// 	while (info->av[i] && i < len)
+// 	{
+// 		// ft_printf("info->av[i] is %s\n", info->av[i]);
+// 		if ((err = check_str(info->av[i], '=')))
+// 			return (err);
+// 		tmp  = ft_strsplit(info->av[1], '=');
+// 		setenv_fuc(info->cmd_env, tmp[0], tmp[1]);
+// 		i++;
+// 	}
+// 	print_env(info);
+// 	return (0);
 // }
 
 int		buitin_cmd_env(t_minfo *info)
@@ -144,54 +163,42 @@ int		buitin_cmd_env(t_minfo *info)
 	err = 0;
 	while (info->av[len])
 		len++;
-	ft_printf("len is %d\n", len);
+	// ft_printf("len is %d\n", len);
+	info->cmd_env = NULL;
 	if (len == 1)
 		print_env(info);
-	else if (len > 1)
+	else if (len > 1 && ft_strchr(info->av[len - 1], '/'))
 	{
 		info->cmd_env = (char**)malloc(sizeof(char*) * (len - 1));
-		if (ft_strchr(info->av[len - 1], '/'))
+		while (info->av[i] && i < len - 1)
 		{
-			while (info->av[i] && i < len)
-			{
-				ft_printf("info->av[i] is %s\n", info->av[i]);
-				if ((err = check_str(info->av[i], '=')))
-					return (err);
-				info->cmd_env[j] = ft_strdup(info->av[i]);
-				j++;
-				i++;
-			}
-			info->cmd_env[j] = NULL;
-			err = stat(info->av[len - 1], &s);
-			if (err == -1)
-				ft_fprintf(2, "cd: no such file or directory: %s\n", info->av[len - 1]);
-			else if (!S_ISDIR(s.st_mode))
-				ft_fprintf(2, "cd: not a directory: %s\n", info->av[len - 1]);
-			else if (!(err = access(info->av[len - 1], X_OK)))
-				exc_command(info);
-			else
-				ft_fprintf(2, "%s: Permission denied.\n", info->av[len - 1]);
+			ft_printf("info->av[i] is %s\n", info->av[i]);
+			if ((err = check_str(info->av[i], '=')))
+				return (err);
+			info->cmd_env[j] = ft_strdup(info->av[i]);
+			j++;
+			i++;
+		}
+		info->cmd_env[j] = NULL;
+
+		// ft_printf("last arg is %s\n", info->av[len - 1]);
+		err = stat(info->av[len - 1], &s);
+		if (err == -1)
+			ft_fprintf(2, "cd: no such file or directory: %s\n", info->av[len - 1]);
+		// else if (!S_ISDIR(s.st_mode))
+		// 	ft_fprintf(2, "cd: not a directory: %s\n", info->av[len - 1]);
+		else if (!(err = access(info->av[len - 1], X_OK)))
+		{
+			info->cmd_path = ft_strdup(info->av[len - 1]);
+			exc_command(info);
 		}
 		else
-		{
-			while (info->av[i] && i < len)
-			{
-				ft_printf("info->av[i] is %s\n", info->av[i]);
-				if ((err = check_str(info->av[i], '=')))
-					return (err);
-				info->cmd_env[j] = ft_strdup(info->av[i]);
-				j++;
-				i++;
-			}
-			info->cmd_env[j] = NULL;
-			print_env(info);
-		}
+			ft_fprintf(2, "%s: Permission denied.\n", info->av[len - 1]);
 	}
 	else
-		return (1);
+		ft_fprintf(2, "None support situation\n");
 	return(err);
 }
-
 
 
 

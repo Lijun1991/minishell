@@ -56,9 +56,10 @@ int		buitin_cmd_cd(t_minfo *info);
 //handle_env.c
 int		buitin_cmd_setenv(t_minfo *info);
 int		buitin_cmd_unsetenv(t_minfo *info);
-void	buidin_setenv(t_minfo *info, const char *env_key, const char *env_value);
+void	buitin_setenv(t_minfo *info, const char *env_key, const char *env_value);
 int		print_env(t_minfo *info);
 int		buitin_cmd_env(t_minfo *info);
+
 
 //helper.c
 char	*ft_strcjoin(const char *a, const char *b, char c);

@@ -19,18 +19,18 @@ int		main(int argc, char **argv, char **env)
 	int		i;
 	pid_t	pid;
 	int		r;
-	char	*av[] = {argv[1], argv[2], NULL};//"/bin/ls", "-l", "haa",
+	char	*av[] = {argv[2], argv[3], NULL};//"/bin/ls", "-l", "haa",
 
 	r = -100;
 	i = 0;
 	pid = fork();
 	if (pid == 0)
 	{
-		i = 10;
-		printf("I'm the child! i=%d\n\n", i);
-		execve(argv[1], av, env);
-		printf("Something terrible happened.\n");
-		exit(1);
+		// i = getenv("i");
+		printf("I'm the child! i=%s\n\n", getenv("i"));
+		// execve(argv[2], av, env);
+		// printf("Something terrible happened.\n");
+		// exit(1);
 	}
 	else if (pid > 0)
 	{

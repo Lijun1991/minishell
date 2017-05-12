@@ -45,8 +45,8 @@ int	buitin_cmd_cd(t_minfo *info)
 	{
 		if (!(err = chdir(dir)))
 		{
-			buidin_setenv(info, "OLDPWD", pwd);
-			buidin_setenv(info, "PWD", getcwd(buf, MAX_PATH_LENGTH));
+			buitin_setenv(info, "OLDPWD", pwd);
+			buitin_setenv(info, "PWD", getcwd(buf, MAX_PATH_LENGTH));
 		}
 	}
 	else
