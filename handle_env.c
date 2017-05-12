@@ -122,6 +122,14 @@ int		print_env(t_minfo *info)
 	return (0);
 }
 
+// int		check_last_arg(t_minfo *info, int len)
+// {
+// 	int		err;
+
+// 	err = 0;
+// 	ft_strchr(info->av[len - 1], '/');
+// }
+
 int		buitin_cmd_env(t_minfo *info)
 {
 	int		i;
@@ -136,31 +144,51 @@ int		buitin_cmd_env(t_minfo *info)
 	err = 0;
 	while (info->av[len])
 		len++;
-	// len++;
+	ft_printf("len is %d\n", len);
 	if (len == 1)
 		print_env(info);
 	else if (len > 1)
 	{
 		info->cmd_env = (char**)malloc(sizeof(char*) * (len - 1));
-		while (info->av[i] && i < len - 1)
+		if (ft_strchr(info->av[len - 1], '/'))
 		{
-			if ((err = check_str(info->av[i], '=')))
-				return (err);
-			info->cmd_env[j] = ft_strdup(info->av[i]);
-			j++;
-			i++;
+			while (info->av[i] && i < len)
+			{
+				ft_printf("info->av[i] is %s\n", info->av[i]);
+				if ((err = check_str(info->av[i], '=')))
+					return (err);
+				info->cmd_env[j] = ft_strdup(info->av[i]);
+				j++;
+				i++;
+			}
+			info->cmd_env[j] = NULL;
+			err = stat(info->av[len - 1], &s);
+			if (err == -1)
+				ft_fprintf(2, "cd: no such file or directory: %s\n", info->av[len - 1]);
+			else if (!S_ISDIR(s.st_mode))
+				ft_fprintf(2, "cd: not a directory: %s\n", info->av[len - 1]);
+			else if (!(err = access(info->av[len - 1], X_OK)))
+				exc_command(info);
+			else
+				ft_fprintf(2, "%s: Permission denied.\n", info->av[len - 1]);
 		}
-		info->cmd_env[j] = NULL;
-		err = stat(info->av[len - 1], &s);
-		if (err == -1)
-			ft_fprintf(2, "cd: no such file or directory: %s\n", info->av[len - 1]);
-		else if (!S_ISDIR(s.st_mode))
-			ft_fprintf(2, "cd: not a directory: %s\n", info->av[len - 1]);
-		else if (!(err = access(info->av[len - 1], X_OK)))
-			exc_command(info);
 		else
-			ft_fprintf(2, "%s: Permission denied.\n", info->av[len - 1]);
+		{
+			while (info->av[i] && i < len)
+			{
+				ft_printf("info->av[i] is %s\n", info->av[i]);
+				if ((err = check_str(info->av[i], '=')))
+					return (err);
+				info->cmd_env[j] = ft_strdup(info->av[i]);
+				j++;
+				i++;
+			}
+			info->cmd_env[j] = NULL;
+			print_env(info);
+		}
 	}
+	else
+		return (1);
 	return(err);
 }
 
