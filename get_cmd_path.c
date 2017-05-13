@@ -57,9 +57,11 @@ int		handle_env_path(t_minfo *info)
 	while (info->env[i])
 	{
 		if (!ft_strncmp(info->env[i], "PATH", 4))
-			info->env_path = ft_strsub(info->env[i], 5, ((int)ft_strlen(info->env[i]) - 5));
+			info->env_path = ft_strsub(info->env[i], 5, \
+				((int)ft_strlen(info->env[i]) - 5));
 		if (!ft_strncmp(info->env[i], "HOME", 4))
-			info->home = ft_strsub(info->env[i], 5, ((int)ft_strlen(info->env[i]) - 5));
+			info->home = ft_strsub(info->env[i], 5, \
+				((int)ft_strlen(info->env[i]) - 5));
 		i++;
 	}
 	return (0);
@@ -74,14 +76,16 @@ int		get_cmd_path(t_minfo *info)
 		info->cmd_path = ft_strdup(info->cmd);
 		if (stat(info->cmd_path, &s) == -1)
 		{
-			ft_fprintf(2, "minishell: no such file or directory: %s\n", info->cmd_path);
+			ft_fprintf(2, "minishell: no such file or directory: %s\n", \
+				info->cmd_path);
 			return (0);
 		}
 		if (!access(info->cmd_path, X_OK))
 			return (0);
 		else
 		{
-			ft_fprintf(2, "minishell: permission denied: %s\n", info->cmd);
+			ft_fprintf(2, "minishell: permission denied: %s\n", \
+				info->cmd);
 			return (0);
 		}
 	}

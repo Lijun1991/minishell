@@ -56,77 +56,6 @@ void	buitin_setenv(t_minfo *info, const char *env_key, const char *env_value)
 	info->env = new_env;
 }
 
-int		buitin_cmd_setenv(t_minfo *info)
-{
-	char **tmp;
-
-	if (info->av[2])
-	{
-		ft_fprintf(2, "setenv err\n");
-		return (1);
-	}
-	tmp  = ft_strsplit(info->av[1], '=');
-	if (check_str(info->av[1], '=') || !tmp || !tmp[0])
-	{
-		deep_free(tmp);
-		return (1);
-	}
-	buitin_setenv(info, tmp[0], tmp[1]);
-	deep_free(tmp);
-	return (0);
-}
-
-int		buitin_cmd_unsetenv(t_minfo *info)
-{
-	int		i;
-	int		j;
-	char	**new_env;
-	int		find;
-
-	i = 0;
-	find = 0;
-	if (info->av[2])
-		return (1);
-	while (info->env[i])
-	{
-		if (!ft_strncmp(info->av[1], info->env[i], ft_strlen(info->av[1])))
-			find = 1;
-		i++;
-	}
-	if (find)
-	{
-		new_env = (char**)malloc(sizeof(char*) * (i));
-		i = 0;
-		j = 0;
-		while (info->env[i])
-		{
-			if (ft_strncmp(info->av[1], info->env[i], ft_strlen(info->av[1])))
-			{
-				new_env[j] = ft_strdup(info->env[i]);
-				j++;
-			}
-			free(info->env[i]);
-			i++;
-		}
-		new_env[j] = NULL;
-		free(info->env);
-		info->env = new_env;
-	}
-	return (0);
-}
-
-int		print_env(t_minfo *info)
-{
-	int		i;
-
-	i = 0;
-	while (info->env[i])
-	{
-		ft_printf("%s\n", info->env[i]);
-		i++;
-	}
-	return (0);
-}
 
 int		get_cmd_env(t_minfo *info, int len)
 {
@@ -149,11 +78,6 @@ int		get_cmd_env(t_minfo *info, int len)
 	info->cmd_env[j] = NULL;
 	return (0);
 }
-
-// int		check_file_status(char *s, info)
-// {
-
-// }
 
 int		handle_executable_file(t_minfo *info, int len)
 {
@@ -180,35 +104,6 @@ int		handle_executable_file(t_minfo *info, int len)
 		info->sign = 1;
 	}
 	return (0);
-}
-
-int		buitin_cmd_env(t_minfo *info)
-{
-	int		len;
-	
-	len = 0;
-
-	recheck_env_path(info);
-	if (!info->env_path || !ft_strcmp(info->env_path, ""))
-	{
-		ft_fprintf(2, "minishell: command not found: %s\n", info->cmd);
-		return (0);
-	}
-	while (info->av[len])
-		len++;
-	if (len == 1 && ft_strcmp(info->env_path, "") && info->env_path)
-		print_env(info);
-	else if (len > 1 && ft_strchr(info->av[len - 1], '/'))
-	{
-		if (handle_executable_file(info, len))
-			return (1);
-	}
-	else
-	{
-		ft_fprintf(2, "None support\n");
-		info->sign = 1;
-	}
-	return(0);
 }
 
 

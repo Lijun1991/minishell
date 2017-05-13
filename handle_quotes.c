@@ -80,7 +80,7 @@ void	cut_quos_refill_space(char **tmp)
 	}
 }
 
-int			line_wordcount(char *str)
+static int			line_wordcount(char *str)
 {
 	int		i;
 	int		j;
@@ -88,9 +88,13 @@ int			line_wordcount(char *str)
 	i = -1;
 	j = 0;
 	while (str[++i])
-		if (str[i] != ' ' && str[i] != '\t' && str[i] != '\v' && str[i] != '\r' && \
-			(str[i + 1] == ' ' || str[i + 1] == '\t' || str[i + 1] == '\v' || str[i + 1] == '\r' || str[i + 1] == '\0'))
+	{
+		if (str[i] != ' ' && str[i] != '\t' && str[i] != '\v' \
+			&& str[i] != '\r' && (str[i + 1] == ' ' \
+				|| str[i + 1] == '\t' || str[i + 1] == '\v' \
+				|| str[i + 1] == '\r' || str[i + 1] == '\0'))
 			j++;
+	}
 	return (j);
 }
 
@@ -101,11 +105,9 @@ char		**line_split(char const *s)
 	int		i;
 	int		j;
 
-	if (!s)
+	if (!s || !(dst = (char**)malloc(sizeof(char*) \
+		* (line_wordcount((char*)s) + 1))))
 		return (NULL);
-	dst = (char**)malloc(sizeof(char*) * (line_wordcount((char*)s) + 1));
-	if (!dst)
-		return (0);
 	i = -1;
 	j = 0;
 	len = 0;
@@ -114,7 +116,8 @@ char		**line_split(char const *s)
 		if (s[i] != ' ' && s[i] != '\t' && s[i] != '\v' && s[i] != '\r')
 			len++;
 		if (s[i] !=  ' ' && s[i] != '\t' && s[i] != '\v' && s[i] != '\r' \
-			&& (s[i + 1] == ' ' || s[i + 1] == '\t' || s[i + 1] == '\v' || s[i + 1] == '\r' || s[i + 1] == '\0'))
+			&& (s[i + 1] == ' ' || s[i + 1] == '\t' || s[i + 1] == '\v' \
+				|| s[i + 1] == '\r' || s[i + 1] == '\0'))
 		{
 			dst[j++] = ft_strsub(s, i - len + 1, len);
 			len = 0;

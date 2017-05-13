@@ -12,14 +12,14 @@
 
 #include "minishell.h"
 
-int		check_buildin(t_minfo *info)
+static int		check_buildin(t_minfo *info)
 {
 	return (!ft_strcmp(info->cmd, "echo") || !ft_strcmp(info->cmd, "cd") ||
 		!ft_strcmp(info->cmd, "setenv") || !ft_strcmp(info->cmd, "unsetenv") ||
 		!ft_strcmp(info->cmd, "env") || !ft_strcmp(info->cmd, "exit"));
 }
 
-int		ck_buildin_cmd(t_minfo *info)
+static int		ck_buildin_cmd(t_minfo *info)
 {
 	if (!ft_strcmp(info->cmd, "echo"))
 		return (buitin_cmd_echo(info));
@@ -48,7 +48,8 @@ int		exc_command(t_minfo *info)
 	pid = fork();
 	if (pid == 0)
 	{
-		execve(info->cmd_path, info->cmd_env ? info->cmd_env : info->av, info->cmd_env ? info->cmd_env : info->env);
+		execve(info->cmd_path, info->cmd_env ? info->cmd_env : info->av, \
+			info->cmd_env ? info->cmd_env : info->env);
 		exit(1);
 	}
 	else if (pid > 0)
@@ -61,30 +62,7 @@ int		exc_command(t_minfo *info)
 	return (r);
 }
 
-void	handle_prompt(int sign, t_minfo *info)
-{
-	char	buf[MAX_PATH_LENGTH + 1];
-	char	*pwd;
-
-	pwd = getcwd(buf, MAX_PATH_LENGTH);
-	if (sign)
-	{
-		if (!ft_strcmp(pwd, info->home))
-			ft_printf(RED"$~"CLN);
-		else
-			ft_printf(RED"$>"CLN);
-	}
-	else
-	{
-		recheck_env_path(info);
-		if (!ft_strcmp(pwd, info->home))
-			ft_printf("$~");
-		else
-			ft_printf("$>");
-	}
-}
-
-int		run_command(t_minfo *info)
+static int		run_command(t_minfo *info)
 {
 	if (check_buildin(info))
 	{

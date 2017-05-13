@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int		count_qoute(char *line)
+static int		count_qoute(char *line)
 {
 	int i;
 	int count;

@@ -16,15 +16,13 @@ char	*ft_strcjoin(const char *a, const char *b, char c)
 {
 	int		i;
 	int		j;
-	int		size;
 	char	*dst;
 
 	i = 0;
 	j = 0;
 	if (!a || !b)
 		return (NULL);
-	size = strlen(a) + strlen(b);
-	dst = (char*)malloc(sizeof(char) * (size + 2));
+	dst = (char*)malloc(sizeof(char) * (ft_strlen(a) + ft_strlen(b) + 2));
 	if (!dst)
 		return (NULL);
 	while (a[i])
@@ -69,4 +67,40 @@ void	recheck_env_path(t_minfo *info)
 	info->home = NULL;
 	info->env_path = NULL;
 	handle_env_path(info);
+}
+
+void	handle_prompt(int sign, t_minfo *info)
+{
+	char	buf[MAX_PATH_LENGTH + 1];
+	char	*pwd;
+
+	pwd = getcwd(buf, MAX_PATH_LENGTH);
+	if (sign)
+	{
+		if (!ft_strcmp(pwd, info->home))
+			ft_printf(RED"$~"CLN);
+		else
+			ft_printf(RED"$>"CLN);
+	}
+	else
+	{
+		recheck_env_path(info);
+		if (!ft_strcmp(pwd, info->home))
+			ft_printf("$~");
+		else
+			ft_printf("$>");
+	}
+}
+
+int		print_env(t_minfo *info)
+{
+	int		i;
+
+	i = 0;
+	while (info->env[i])
+	{
+		ft_printf("%s\n", info->env[i]);
+		i++;
+	}
+	return (0);
 }
