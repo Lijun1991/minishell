@@ -21,6 +21,5 @@ int main(int argc, char **argv, char **env)
 	if (get_info(argv, env, &info))
 		return (1);
 	minishell(&info);
-	minishell(&info);
 	free_everything(&info);
 }

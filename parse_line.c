@@ -55,6 +55,7 @@ int		parse_line(t_minfo *info)
 {
 	char **av;
 
+	handle_env_path(info);
 	av = NULL;
 	av = handle_qoated(info->line);
 	if (!av)

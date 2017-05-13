@@ -162,7 +162,6 @@ int		minishell(t_minfo *info)
 			info->sign = 1;
 		}
 		free_for_loop(info);
-		handle_env_path(info);
 	}
 	return (0);
 }
