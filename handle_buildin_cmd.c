@@ -12,6 +12,27 @@
 
 #include "minishell.h"
 
+// int		check_dollar_sign(char *s, t_minfo *info)
+// {
+// 	int i;
+// 	char	*tmp;
+
+// 	i = 0;
+// 	tmp = NULL;
+// 	if (s[0] == '$')
+// 	{
+// 		s++;
+// 		while (info->env[i])
+// 		{
+// 			if (!ft_strncmp(info->env[i], s, 4))
+// 				tmp = ft_strsub(info->env[i], 5, ((int)ft_strlen(info->env[i]) - 5));
+// 			i++;
+// 		}
+// 	}
+// 	s = tmp;
+// 	return (0);
+// }
+
 int		buitin_cmd_echo(t_minfo *info)
 {
 	int		i;
@@ -19,6 +40,9 @@ int		buitin_cmd_echo(t_minfo *info)
 	i = 1;
 	while (info->av[i])
 	{
+		// if (check_dollar_sign(info->av[i], info))
+		// 	return (1);
+		
 		ft_printf(info->av[i + 1] ? "%s " : "%s\n", info->av[i]);
 		i++;
 	}

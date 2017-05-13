@@ -77,7 +77,8 @@ void	handle_prompt(int sign, t_minfo *info)
 	pwd = getcwd(buf, MAX_PATH_LENGTH);
 	if (sign)
 	{
-		if (!ft_strcmp(pwd, info->home))
+		recheck_env_path(info);
+		if (info->home && !ft_strcmp(pwd, info->home))
 			ft_printf(RED"$~"CLN);
 		else
 			ft_printf(RED"$>"CLN);
@@ -85,7 +86,7 @@ void	handle_prompt(int sign, t_minfo *info)
 	else
 	{
 		recheck_env_path(info);
-		if (!ft_strcmp(pwd, info->home))
+		if (info->home && !ft_strcmp(pwd, info->home))
 			ft_printf("$~");
 		else
 			ft_printf("$>");
