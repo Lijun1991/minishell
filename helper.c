@@ -61,3 +61,12 @@ int		check_str(char *str, char c)
 	}
 	return (0);
 }
+
+void	recheck_env_path(t_minfo *info)
+{
+	free(info->env_path);
+	free(info->home);
+	info->home = NULL;
+	info->env_path = NULL;
+	handle_env_path(info);
+}

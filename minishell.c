@@ -12,13 +12,6 @@
 
 #include "minishell.h"
 
-//Parse input in commands i.e. use gnl -- CHECK FOR ERRORS, NOT SEGFAULT OR LEAK!!!
-//Check if commands if a buitin i.e echo, cd, setenv, unsetenv, env or exit
-//if not, check if is in the PATH, before fork, check for access
-//	then fork, parent waits, child execve
-//if not, display error
-//cleanup memory
-
 int		check_buildin(t_minfo *info)
 {
 	return (!ft_strcmp(info->cmd, "echo") || !ft_strcmp(info->cmd, "cd") ||
@@ -59,47 +52,13 @@ int		exc_command(t_minfo *info)
 		exit(1);
 	}
 	else if (pid > 0)
-	{
 		wait(&r);
-		// if (r)
-		// 	ft_printf("cmd doesn't execve successfully\n");
-	}
 	else
 	{
 		ft_printf("Failed to fork process\n");
 		exit (1);
 	}
 	return (r);
-}
-
-int		get_cmd_path(t_minfo *info)
-{
-	int	err;
-
-	//CHECK if info->cmd contains / then call the appropriate function
-	//otherwise do this:
-	err = 0;
-	if (ft_strchr(info->cmd, '/') )
-	{
-		info->cmd_path = ft_strdup(info->cmd);
-		if (!access(info->cmd_path, X_OK))
-			return (0);
-		else
-		{
-			ft_fprintf(2, "minishell: permission denied: %s\n", info->cmd);
-			return (0);
-		}
-	}
-	else if (info->env && !(err = handle_env_path(info)))
-	{
-		if (ck_cmd(info) != NULL)
-			return (0);
-		else
-			return (1);
-	}
-	else
-		return (1);
-	return (err);
 }
 
 void	handle_prompt(int sign, t_minfo *info)
@@ -117,6 +76,7 @@ void	handle_prompt(int sign, t_minfo *info)
 	}
 	else
 	{
+		recheck_env_path(info);
 		if (!ft_strcmp(pwd, info->home))
 			ft_printf("$~");
 		else

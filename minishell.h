@@ -24,14 +24,14 @@
 
 typedef struct	s_minfo
 {
-	char	**env;
-	char	**cmd_env;
-	char	*home;
-	char	*env_path;
-	char	**pre_path;//from env path:
+	char	**env;//1
+	char	**cmd_env;//6
+	char	*home;//3
+	char	*env_path;//2
+	char	**pre_path;
 
-	char	**av;//from input line
-	char	*cmd;//
+	char	**av;//4 start loop
+	char	*cmd;//5
 	char	*cmd_path;//
 
 	char	*line;
@@ -65,6 +65,7 @@ int		buitin_cmd_env(t_minfo *info);
 //helper.c
 char	*ft_strcjoin(const char *a, const char *b, char c);
 int		check_str(char *str, char c);
+void	recheck_env_path(t_minfo *info);
 
 //minishell.c
 int		minishell(t_minfo *info);

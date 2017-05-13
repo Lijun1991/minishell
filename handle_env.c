@@ -61,7 +61,10 @@ int		buitin_cmd_setenv(t_minfo *info)
 	char **tmp;
 
 	if (info->av[2])
+	{
+		ft_fprintf(2, "setenv err\n");
 		return (1);
+	}
 	tmp  = ft_strsplit(info->av[1], '=');
 	if (check_str(info->av[1], '=') || !tmp || !tmp[0])
 	{
@@ -73,7 +76,7 @@ int		buitin_cmd_setenv(t_minfo *info)
 	return (0);
 }
 
-int	buitin_cmd_unsetenv(t_minfo *info)
+int		buitin_cmd_unsetenv(t_minfo *info)
 {
 	int		i;
 	int		j;
@@ -102,9 +105,11 @@ int	buitin_cmd_unsetenv(t_minfo *info)
 				new_env[j] = ft_strdup(info->env[i]);
 				j++;
 			}
+			free(info->env[i]);
 			i++;
 		}
 		new_env[j] = NULL;
+		free(info->env);
 		info->env = new_env;
 	}
 	return (0);
@@ -145,6 +150,11 @@ int		get_cmd_env(t_minfo *info, int len)
 	return (0);
 }
 
+// int		check_file_status(char *s, info)
+// {
+
+// }
+
 int		handle_executable_file(t_minfo *info, int len)
 {
 	int err;
@@ -156,7 +166,7 @@ int		handle_executable_file(t_minfo *info, int len)
 	err = stat(info->av[len - 1], &s);
 	if (err == -1)
 	{
-		ft_fprintf(2, "cd: no such file or directory: %s\n", info->av[len - 1]);
+		ft_fprintf(2, "minishell: no such file or directory: %s\n", info->av[len - 1]);
 		info->sign = 1;
 	}
 	else if (!(err = access(info->av[len - 1], X_OK)))
@@ -177,15 +187,16 @@ int		buitin_cmd_env(t_minfo *info)
 	int		len;
 	
 	len = 0;
-	handle_env_path(info);
+
+	recheck_env_path(info);
 	if (!info->env_path || !ft_strcmp(info->env_path, ""))
 	{
 		ft_fprintf(2, "minishell: command not found: %s\n", info->cmd);
-		return (1);
+		return (0);
 	}
 	while (info->av[len])
 		len++;
-	if (len == 1 && ft_strcmp(info->env_path, ""))
+	if (len == 1 && ft_strcmp(info->env_path, "") && info->env_path)
 		print_env(info);
 	else if (len > 1 && ft_strchr(info->av[len - 1], '/'))
 	{

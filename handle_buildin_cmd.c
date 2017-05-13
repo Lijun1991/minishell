@@ -25,7 +25,6 @@ int		buitin_cmd_echo(t_minfo *info)
 	return (0);
 }
 
-
 int	buitin_cmd_cd(t_minfo *info)
 {
 	char	buf[MAX_PATH_LENGTH + 1];
@@ -35,8 +34,10 @@ int	buitin_cmd_cd(t_minfo *info)
 	char	*dir;
 
 	pwd = getcwd(buf, MAX_PATH_LENGTH);
+	recheck_env_path(info);
+	if (!info->home || !ft_strcmp(info->home, ""))
+		info->home = ft_strdup(pwd);
 	dir = info->av[1] == NULL ? info->home : info->av[1];
-
 	err = stat(dir, &s);
 	if (err == -1)
 		ft_fprintf(2, "cd: no such file or directory: %s\n", dir);

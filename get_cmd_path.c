@@ -51,29 +51,46 @@ char	*ck_cmd(t_minfo *info)
 int		handle_env_path(t_minfo *info)
 {
 	int		i;
-	// int		find;
 
 	i = 0;
-	// info->find = 0;
 	info->env_path = NULL;
 	while (info->env[i])
 	{
-		// free(info->home);
-		// info->home = NULL;
 		if (!ft_strncmp(info->env[i], "PATH", 4))
 			info->env_path = ft_strsub(info->env[i], 5, ((int)ft_strlen(info->env[i]) - 5));
 		if (!ft_strncmp(info->env[i], "HOME", 4))
 			info->home = ft_strsub(info->env[i], 5, ((int)ft_strlen(info->env[i]) - 5));
 		i++;
 	}
-	// if (info->find)
-	// {
-	// 	deep_free(info->pre_path);
-	// 	info->pre_path = ft_strsplit(info->env_path, ':');
-	// 	free(info->env_path);
-	// 	info->env_path = NULL;
-	// }
-	// else		
-	// 	return (1);
 	return (0);
 }
+
+int		get_cmd_path(t_minfo *info)
+{
+	struct stat s;
+
+	if (ft_strchr(info->cmd, '/') )
+	{
+		info->cmd_path = ft_strdup(info->cmd);
+		if (stat(info->cmd_path, &s) == -1)
+		{
+			ft_fprintf(2, "minishell: no such file or directory: %s\n", info->cmd_path);
+			return (0);
+		}
+		if (!access(info->cmd_path, X_OK))
+			return (0);
+		else
+		{
+			ft_fprintf(2, "minishell: permission denied: %s\n", info->cmd);
+			return (0);
+		}
+	}
+	else if (info->env && ck_cmd(info))
+		return (0);
+	else
+		return (1);
+	return (0);
+}
+
+
+

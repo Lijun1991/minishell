@@ -102,7 +102,7 @@ char		**line_split(char const *s)
 	int		j;
 
 	if (!s)
-		return (0);
+		return (NULL);
 	dst = (char**)malloc(sizeof(char*) * (line_wordcount((char*)s) + 1));
 	if (!dst)
 		return (0);

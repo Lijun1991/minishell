@@ -41,6 +41,8 @@ char	**handle_qoated(char *line)
 		return (NULL);
 	change_space(line);
 	av = line_split(line);
+	if (!av)
+		return (NULL);
 	tmp = av;
 	while (*tmp)
 	{
@@ -55,7 +57,7 @@ int		parse_line(t_minfo *info)
 {
 	char **av;
 
-	handle_env_path(info);
+	recheck_env_path(info);
 	av = NULL;
 	av = handle_qoated(info->line);
 	if (!av)
