@@ -35,6 +35,7 @@ typedef struct	s_minfo
 	char	*cmd_path;//
 
 	char	*line;
+	int		sign;//to see if there is any error
 	// int		find;//if there is env path
 }				t_minfo;
 
@@ -78,7 +79,7 @@ void	free_for_loop(t_minfo *info);
 void	free_everything(t_minfo *info);
 
 //parse_line.c
-void	parse_line(t_minfo *info);
+int		parse_line(t_minfo *info);
 char	**handle_qoated(char *line);
 
 //handle_quotes.c

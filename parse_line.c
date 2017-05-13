@@ -51,19 +51,20 @@ char	**handle_qoated(char *line)
 	return (av);
 }
 
-void	parse_line(t_minfo *info)
+int		parse_line(t_minfo *info)
 {
 	char **av;
 
 	av = NULL;
 	av = handle_qoated(info->line);
 	if (!av)
-		return ;
+		return (1);
 	info->av = av;
 	if (info->av[0])
 		info->cmd = ft_strdup(info->av[0]);
 	else
 		info->cmd = ft_strdup("");
+	return (0);
 }
 
 

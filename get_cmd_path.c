@@ -28,7 +28,7 @@ char	*ck_cmd(t_minfo *info)
 	char		*new_path;
 
 	i = 0;
-	if (ft_strcmp(info->env_path, ""))
+	if (info->env_path && ft_strcmp(info->env_path, ""))
 	{
 		deep_free(info->pre_path);
 		info->pre_path = ft_strsplit(info->env_path, ':');
@@ -55,14 +55,13 @@ int		handle_env_path(t_minfo *info)
 
 	i = 0;
 	// info->find = 0;
+	info->env_path = NULL;
 	while (info->env[i])
 	{
 		// free(info->home);
 		// info->home = NULL;
 		if (!ft_strncmp(info->env[i], "PATH", 4))
-		{
-			(info->env_path = ft_strsub(info->env[i], 5, ((int)ft_strlen(info->env[i]) - 5)));
-		}
+			info->env_path = ft_strsub(info->env[i], 5, ((int)ft_strlen(info->env[i]) - 5));
 		if (!ft_strncmp(info->env[i], "HOME", 4))
 			info->home = ft_strsub(info->env[i], 5, ((int)ft_strlen(info->env[i]) - 5));
 		i++;

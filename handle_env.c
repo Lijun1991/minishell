@@ -113,44 +113,72 @@ int	buitin_cmd_unsetenv(t_minfo *info)
 int		print_env(t_minfo *info)
 {
 	int		i;
-	int		j;
 
 	i = 0;
-	j = 1;
-	if (info->cmd_env)
+	while (info->env[i])
 	{
-		while (info->cmd_env[i])
-		{
-			ft_printf("%s\n", info->cmd_env[i]);
-			i++;
-		}
+		ft_printf("%s\n", info->env[i]);
+		i++;
+	}
+	return (0);
+}
+
+int		get_cmd_env(t_minfo *info, int len)
+{
+	int	err;
+	int	i;
+	int	j;
+
+	err = 0;
+	i = 1;
+	j = 0;
+	info->cmd_env = (char**)malloc(sizeof(char*) * (len - 1));
+	while (info->av[i] && i < len - 1)
+	{
+		if ((err = check_str(info->av[i], '=')))
+			return (err);
+		info->cmd_env[j] = ft_strdup(info->av[i]);
+		j++;
+		i++;
+	}
+	info->cmd_env[j] = NULL;
+	return (0);
+}
+
+int		handle_executable_file(t_minfo *info, int len)
+{
+	int err;
+	struct stat s;
+
+	err = 0;
+	if (get_cmd_env(info, len))
+		return (1);
+	err = stat(info->av[len - 1], &s);
+	if (err == -1)
+	{
+		ft_fprintf(2, "cd: no such file or directory: %s\n", info->av[len - 1]);
+		info->sign = 1;
+	}
+	else if (!(err = access(info->av[len - 1], X_OK)))
+	{
+		info->cmd_path = ft_strdup(info->av[len - 1]);
+		exc_command(info);
 	}
 	else
 	{
-		while (info->env[i])
-		{
-				ft_printf("%s\n", info->env[i]);
-			i++;
-		}
+		ft_fprintf(2, "%s: Permission denied.\n", info->av[len - 1]);
+		info->sign = 1;
 	}
 	return (0);
 }
 
 int		buitin_cmd_env(t_minfo *info)
 {
-	int		i;
-	int		j;
 	int		len;
-	struct stat s;
-	int		err;
-
-	i = 1;
+	
 	len = 0;
-	j = 0;
-	err = 0;
 	handle_env_path(info);
-
-	if (!ft_strcmp(info->env_path, ""))
+	if (!info->env_path || !ft_strcmp(info->env_path, ""))
 	{
 		ft_fprintf(2, "minishell: command not found: %s\n", info->cmd);
 		return (1);
@@ -161,34 +189,15 @@ int		buitin_cmd_env(t_minfo *info)
 		print_env(info);
 	else if (len > 1 && ft_strchr(info->av[len - 1], '/'))
 	{
-		info->cmd_env = (char**)malloc(sizeof(char*) * (len - 1));
-		while (info->av[i] && i < len - 1)
-		{
-			ft_printf("info->av[i] is %s\n", info->av[i]);
-			if ((err = check_str(info->av[i], '=')))
-				return (err);
-			info->cmd_env[j] = ft_strdup(info->av[i]);
-			j++;
-			i++;
-		}
-		info->cmd_env[j] = NULL;
-
-		err = stat(info->av[len - 1], &s);
-		if (err == -1)
-			ft_fprintf(2, "cd: no such file or directory: %s\n", info->av[len - 1]);
-		// else if (!S_ISDIR(s.st_mode))
-		// 	ft_fprintf(2, "cd: not a directory: %s\n", info->av[len - 1]);
-		else if (!(err = access(info->av[len - 1], X_OK)))
-		{
-			info->cmd_path = ft_strdup(info->av[len - 1]);
-			exc_command(info);
-		}
-		else
-			ft_fprintf(2, "%s: Permission denied.\n", info->av[len - 1]);
+		if (handle_executable_file(info, len))
+			return (1);
 	}
 	else
-		ft_fprintf(2, "None support situation\n");
-	return(err);
+	{
+		ft_fprintf(2, "None support\n");
+		info->sign = 1;
+	}
+	return(0);
 }
 
 

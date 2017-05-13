@@ -83,10 +83,7 @@ int		get_cmd_path(t_minfo *info)
 	{
 		info->cmd_path = ft_strdup(info->cmd);
 		if (!access(info->cmd_path, X_OK))
-		{
-			// ft_printf("hello\n");
 			return (0);
-		}
 		else
 		{
 			ft_fprintf(2, "minishell: permission denied: %s\n", info->cmd);
@@ -127,33 +124,45 @@ void	handle_prompt(int sign, t_minfo *info)
 	}
 }
 
+int		run_command(t_minfo *info)
+{
+	if (check_buildin(info))
+	{
+		if (ck_buildin_cmd(info))
+			info->sign = 1;
+	}
+	else if (!ft_strcmp(info->cmd, ""))
+		info->sign = 0;
+	else if (!get_cmd_path(info))
+	{
+		if (exc_command(info))
+			info->sign = 1;
+	}
+	else
+	{
+		ft_fprintf(2, "minishell: commmand not found: %s\n", info->cmd);
+		info->sign = 1;
+	}
+	return (0);
+}
+
 int		minishell(t_minfo *info)
 {
-	int	sign;
-
-	sign = 0;
 	while (1)
 	{
-		handle_prompt(sign, info);
-		sign = 0;
+		handle_prompt(info->sign, info);
+		info->sign = 0;
 		if (!get_next_line(0, &info->line))
 			break ;
-		parse_line(info);
-		if (check_buildin(info))
-		{
-			if (ck_buildin_cmd(info))
-				sign = 1;
-		}
-		else if (!ft_strcmp(info->cmd, ""))
-			sign = 0;
-		else if (!get_cmd_path(info))
-		{
-			if (exc_command(info))
-				sign = 1;
-		}
+		if (!(parse_line(info)))
+			run_command(info);
 		else
-			ft_fprintf(2, "minishell: commmand not found: %s\n", info->cmd);
+		{
+			ft_fprintf(2, "None support\n");
+			info->sign = 1;
+		}
 		free_for_loop(info);
+		handle_env_path(info);
 	}
 	return (0);
 }

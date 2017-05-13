@@ -19,10 +19,7 @@ int main(int argc, char **argv, char **env)
 	(void)argc;
 	ft_memset(&info, 0, sizeof(t_minfo));
 	if (get_info(argv, env, &info))
-	{
-		// ft_fprintf(2, "123error\n");
 		return (1);
-	}
 	minishell(&info);
 	minishell(&info);
 	free_everything(&info);
