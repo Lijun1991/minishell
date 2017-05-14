@@ -12,39 +12,6 @@
 
 #include "minishell.h"
 
-void	check_dollor_sign(char **str, t_minfo *info)
-{
-	int		i;
-	char	*tmp;
-	int		find;
-
-	i = 0;
-	tmp = NULL;
-	find = 0;
-	if (*str[0] == '$')
-	{
-		tmp = ft_strsub(*str, 1, (ft_strlen(*str) - 1));
-		while (info->env[i])
-		{
-			if (!ft_strncmp(info->env[i], tmp, ft_strlen(tmp)))
-			{
-				find = 1;
-				free(*str);
-				*str = NULL;
-				*str = ft_strsub(info->env[i], ft_strlen(tmp) + 1, ((int)ft_strlen(info->env[i]) - ft_strlen(tmp) - 1));
-			}
-			i++;
-		}
-		if (!find)
-		{
-			free(*str);
-			*str = NULL;
-			*str = ft_strdup("");
-		}
-	}
-	free(tmp);
-}
-
 int		buitin_cmd_echo(t_minfo *info)
 {
 	int		i;
@@ -60,14 +27,13 @@ int		buitin_cmd_echo(t_minfo *info)
 	return (0);
 }
 
-
 int		buitin_cmd_cd(t_minfo *info)
 {
-	char	buf[MAX_PATH_LENGTH + 1];
-	char	*pwd;
+	char		buf[MAX_PATH_LENGTH + 1];
+	char		*pwd;
 	struct stat	s;
-	int		err;
-	char	*dir;
+	int			err;
+	char		*dir;
 
 	pwd = getcwd(buf, MAX_PATH_LENGTH);
 	recheck_env_path(info);
@@ -94,8 +60,8 @@ int		buitin_cmd_cd(t_minfo *info)
 
 int		buitin_cmd_env(t_minfo *info)
 {
-	int		len;
-	
+	int	len;
+
 	len = 0;
 	while (info->av[len])
 		len++;
@@ -111,7 +77,7 @@ int		buitin_cmd_env(t_minfo *info)
 		ft_fprintf(2, "None support\n");
 		info->sign = 1;
 	}
-	return(0);
+	return (0);
 }
 
 int		buitin_cmd_setenv(t_minfo *info)
@@ -123,7 +89,7 @@ int		buitin_cmd_setenv(t_minfo *info)
 		ft_fprintf(2, "setenv err\n");
 		return (1);
 	}
-	tmp  = ft_strsplit(info->av[1], '=');
+	tmp = ft_strsplit(info->av[1], '=');
 	if (check_str(info->av[1], '=') || !tmp || !tmp[0])
 	{
 		deep_free(tmp);
@@ -172,4 +138,3 @@ int		buitin_cmd_unsetenv(t_minfo *info)
 	}
 	return (0);
 }
-

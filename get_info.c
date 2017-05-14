@@ -12,6 +12,25 @@
 
 #include "minishell.h"
 
+int		handle_env_path(t_minfo *info)
+{
+	int		i;
+
+	i = 0;
+	info->env_path = NULL;
+	while (info->env[i])
+	{
+		if (!ft_strncmp(info->env[i], "PATH", 4))
+			info->env_path = ft_strsub(info->env[i], 5, \
+				((int)ft_strlen(info->env[i]) - 5));
+		if (!ft_strncmp(info->env[i], "HOME", 4))
+			info->home = ft_strsub(info->env[i], 5, \
+				((int)ft_strlen(info->env[i]) - 5));
+		i++;
+	}
+	return (0);
+}
+
 int		copy_env(char **env, t_minfo *info)
 {
 	int		i;

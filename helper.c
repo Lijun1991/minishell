@@ -53,7 +53,7 @@ int		check_str(char *str, char c)
 		return (1);
 	}
 	if (str[0] == c)
-	{	
+	{
 		ft_fprintf(2, "zsh: %s not found", check);
 		return (1);
 	}

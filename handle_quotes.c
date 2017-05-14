@@ -28,7 +28,7 @@ static void	fill_space_helper(char *line, int start, int end)
 	}
 }
 
-void	change_space(char *line)
+void		change_space(char *line)
 {
 	int		i;
 	int		start;
@@ -54,9 +54,9 @@ void	change_space(char *line)
 	}
 }
 
-void	cut_quos_refill_space(char **tmp)
+void		cut_quos_refill_space(char **tmp)
 {
-	int i;
+	int		i;
 	char	*p2;
 	char	*av;
 
@@ -80,7 +80,7 @@ void	cut_quos_refill_space(char **tmp)
 	}
 }
 
-static int			line_wordcount(char *str)
+static int	line_wordcount(char *str)
 {
 	int		i;
 	int		j;
@@ -115,7 +115,7 @@ char		**line_split(char const *s)
 	{
 		if (s[i] != ' ' && s[i] != '\t' && s[i] != '\v' && s[i] != '\r')
 			len++;
-		if (s[i] !=  ' ' && s[i] != '\t' && s[i] != '\v' && s[i] != '\r' \
+		if (s[i] != ' ' && s[i] != '\t' && s[i] != '\v' && s[i] != '\r' \
 			&& (s[i + 1] == ' ' || s[i + 1] == '\t' || s[i + 1] == '\v' \
 				|| s[i + 1] == '\r' || s[i + 1] == '\0'))
 		{
@@ -126,4 +126,3 @@ char		**line_split(char const *s)
 	dst[j] = 0;
 	return (dst);
 }
-

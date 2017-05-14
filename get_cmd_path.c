@@ -12,6 +12,39 @@
 
 #include "minishell.h"
 
+void	check_dollor_sign(char **str, t_minfo *info)
+{
+	int		i;
+	char	*tmp;
+	int		find;
+
+	i = 0;
+	tmp = NULL;
+	find = 0;
+	if (*str[0] == '$')
+	{
+		tmp = ft_strsub(*str, 1, (ft_strlen(*str) - 1));
+		while (info->env[i])
+		{
+			if (!ft_strncmp(info->env[i], tmp, ft_strlen(tmp)))
+			{
+				find = 1;
+				free(*str);
+				*str = NULL;
+				*str = ft_strsub(info->env[i], ft_strlen(tmp) + 1, ((int)ft_strlen(info->env[i]) - ft_strlen(tmp) - 1));
+			}
+			i++;
+		}
+		if (!find)
+		{
+			free(*str);
+			*str = NULL;
+			*str = ft_strdup("");
+		}
+	}
+	free(tmp);
+}
+
 void	add_cmd(char *pre, char *cmd, char **path)
 {
 	char	*tmp;
@@ -48,25 +81,6 @@ char	*ck_cmd(t_minfo *info)
 	return (info->cmd_path);
 }
 
-int		handle_env_path(t_minfo *info)
-{
-	int		i;
-
-	i = 0;
-	info->env_path = NULL;
-	while (info->env[i])
-	{
-		if (!ft_strncmp(info->env[i], "PATH", 4))
-			info->env_path = ft_strsub(info->env[i], 5, \
-				((int)ft_strlen(info->env[i]) - 5));
-		if (!ft_strncmp(info->env[i], "HOME", 4))
-			info->home = ft_strsub(info->env[i], 5, \
-				((int)ft_strlen(info->env[i]) - 5));
-		i++;
-	}
-	return (0);
-}
-
 int		get_cmd_path(t_minfo *info)
 {
 	struct stat s;
@@ -92,11 +106,6 @@ int		get_cmd_path(t_minfo *info)
 	else if (info->env && ck_cmd(info))
 		return (0);
 	else
-	{
 		return (1);
-	}
 	return (0);
 }
-
-
-

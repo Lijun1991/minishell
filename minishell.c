@@ -12,14 +12,14 @@
 
 #include "minishell.h"
 
-static int		check_buildin(t_minfo *info)
+static int	check_buildin(t_minfo *info)
 {
 	return (!ft_strcmp(info->cmd, "echo") || !ft_strcmp(info->cmd, "cd") ||
 		!ft_strcmp(info->cmd, "setenv") || !ft_strcmp(info->cmd, "unsetenv") ||
 		!ft_strcmp(info->cmd, "env") || !ft_strcmp(info->cmd, "exit"));
 }
 
-static int		ck_buildin_cmd(t_minfo *info)
+static int	ck_buildin_cmd(t_minfo *info)
 {
 	if (!ft_strcmp(info->cmd, "echo"))
 		return (buitin_cmd_echo(info));
@@ -39,7 +39,7 @@ static int		ck_buildin_cmd(t_minfo *info)
 	return (0);
 }
 
-int		exc_command(t_minfo *info)
+int			exc_command(t_minfo *info)
 {
 	pid_t	pid;
 	int		r;
@@ -57,12 +57,12 @@ int		exc_command(t_minfo *info)
 	else
 	{
 		ft_printf("Failed to fork process\n");
-		exit (1);
+		exit(1);
 	}
 	return (r);
 }
 
-static int		run_command(t_minfo *info)
+static int	run_command(t_minfo *info)
 {
 	if (check_buildin(info))
 	{
@@ -86,7 +86,7 @@ static int		run_command(t_minfo *info)
 	return (0);
 }
 
-int		minishell(t_minfo *info)
+int			minishell(t_minfo *info)
 {
 	while (1)
 	{
@@ -105,8 +105,3 @@ int		minishell(t_minfo *info)
 	}
 	return (0);
 }
-
-
-
-
-

@@ -18,11 +18,6 @@ char	*ft_strmerge(char *a, char *b)
 	char *ret;
 
 	ret = ft_strjoin(a, b);
-	// if (ft_strcmp(a, "") != 0)
-	// {
-		free(a);
-	// 	a = NULL;
-	// }
-	//free(b);
+	free(a);
 	return (ret);
 }

@@ -19,7 +19,7 @@ static int	free_stdin(char **stock)
 	return (-1);
 }
 
-int		check_stock_nl(char **stock, char **line, int fd)
+int			check_stock_nl(char **stock, char **line, int fd)
 {
 	char *check;
 	char *tmp;
@@ -42,7 +42,7 @@ int		check_stock_nl(char **stock, char **line, int fd)
 	return (0);
 }
 
-int		check_buf_nl(char **buf, char **stock, char **line, int fd)
+int			check_buf_nl(char **buf, char **stock, char **line, int fd)
 {
 	char *check;
 
@@ -61,7 +61,7 @@ int		check_buf_nl(char **buf, char **stock, char **line, int fd)
 	return (0);
 }
 
-int		the_end(int fd, char *buf, char **stock, char **line)
+int			the_end(int fd, char *buf, char **stock, char **line)
 {
 	free(buf);
 	buf = NULL;
@@ -79,14 +79,13 @@ int		the_end(int fd, char *buf, char **stock, char **line)
 	return (1);
 }
 
-int		get_next_line(const int fd, char **line)
+int			get_next_line(const int fd, char **line)
 {
 	int			ret;
 	char		*buf;
 	static char	*stock[MAX_FD];
 
 	if (fd == -42 || fd < 0 || fd > MAX_FD || line == NULL)
-		//return (-1);
 		return (fd == -42 ? free_stdin(stock) : -1);
 	if (stock[fd] != NULL)
 		if (check_stock_nl(stock, line, fd) == 2)

@@ -56,7 +56,6 @@ void	buitin_setenv(t_minfo *info, const char *env_key, const char *env_value)
 	info->env = new_env;
 }
 
-
 int		get_cmd_env(t_minfo *info, int len)
 {
 	int	err;
@@ -81,8 +80,8 @@ int		get_cmd_env(t_minfo *info, int len)
 
 int		handle_executable_file(t_minfo *info, int len)
 {
-	int err;
-	struct stat s;
+	int			err;
+	struct stat	s;
 
 	err = 0;
 	if (get_cmd_env(info, len))
@@ -105,9 +104,3 @@ int		handle_executable_file(t_minfo *info, int len)
 	}
 	return (0);
 }
-
-
-
-
-
-
