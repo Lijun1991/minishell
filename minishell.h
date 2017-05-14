@@ -35,6 +35,7 @@ typedef struct	s_minfo
 
 	char	*line;
 	int		sign;
+	int		err;
 }				t_minfo;
 
 /*
@@ -68,6 +69,7 @@ int				handle_executable_file(t_minfo *info, int len);
 int				get_cmd_env(t_minfo *info, int len);
 void			buitin_setenv(t_minfo *info, const char *env_key, \
 	const char *env_value);
+int				ck_env_content(t_minfo *info, int *i);
 
 /*
 ** helper.c

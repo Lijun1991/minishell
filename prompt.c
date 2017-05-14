@@ -18,17 +18,17 @@ static void	print_prompt(int sign, t_minfo *info, char *pwd, char *cur)
 	{
 		recheck_env_path(info);
 		if (info->home && !ft_strcmp(pwd, info->home))
-			ft_printf(RED"$~ "CLN);
+			ft_printf(RED"~$> "CLN);
 		else
-			ft_printf(RED"$%s> "CLN, cur ? cur : pwd);
+			ft_printf(RED"%s$> "CLN, cur ? cur : pwd);
 	}
 	else
 	{
 		recheck_env_path(info);
 		if (info->home && !ft_strcmp(pwd, info->home))
-			ft_printf(GREE"$~ "CLN);
+			ft_printf(GREE"~$> "CLN);
 		else
-			ft_printf(GREE"$%s> "CLN, cur ? cur : pwd);
+			ft_printf(GREE"%s$> "CLN, cur ? cur : pwd);
 	}
 }
 

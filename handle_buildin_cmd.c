@@ -32,22 +32,20 @@ int		buitin_cmd_cd(t_minfo *info)
 	char		buf[MAX_PATH_LENGTH + 1];
 	char		*pwd;
 	struct stat	s;
-	int			err;
 	char		*dir;
 
 	pwd = getcwd(buf, MAX_PATH_LENGTH);
 	recheck_env_path(info);
 	if (!info->home || !ft_strcmp(info->home, ""))
 		info->home = ft_strdup(pwd);
-	dir = info->av[1] == NULL || !ft_strcmp(info->av[1], "") ? info->home : info->av[1];
-	err = stat(dir, &s);
-	if (err == -1)
+	dir = !info->av[1] ? info->home : info->av[1];
+	if ((info->err = stat(dir, &s) == -1))
 		ft_fprintf(2, "cd: no such file or directory: %s\n", dir);
 	else if (!S_ISDIR(s.st_mode))
 		ft_fprintf(2, "cd: not a directory: %s\n", dir);
-	else if (!(err = access(dir, X_OK | R_OK)))
+	else if (!(info->err = access(dir, X_OK | R_OK)))
 	{
-		if (!(err = chdir(dir)))
+		if (!(info->err = chdir(dir)))
 		{
 			buitin_setenv(info, "OLDPWD", pwd);
 			buitin_setenv(info, "PWD", getcwd(buf, MAX_PATH_LENGTH));
@@ -55,7 +53,7 @@ int		buitin_cmd_cd(t_minfo *info)
 	}
 	else
 		ft_fprintf(2, "%s: Permission denied.\n", dir);
-	return (err);
+	return (info->err);
 }
 
 int		buitin_cmd_env(t_minfo *info)
@@ -105,23 +103,13 @@ int		buitin_cmd_unsetenv(t_minfo *info)
 	int		i;
 	int		j;
 	char	**new_env;
-	int		find;
 
-	i = 0;
-	find = 0;
 	if (info->av[2])
 		return (1);
-	while (info->env[i])
-	{
-		if (!ft_strncmp(info->av[1], info->env[i], ft_strlen(info->av[1])))
-			find = 1;
-		i++;
-	}
-	if (find)
+	if (ck_env_content(info, &i) && !(j = 0))
 	{
 		new_env = (char**)malloc(sizeof(char*) * (i));
 		i = 0;
-		j = 0;
 		while (info->env[i])
 		{
 			if (ft_strncmp(info->av[1], info->env[i], ft_strlen(info->av[1])))

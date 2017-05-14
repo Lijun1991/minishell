@@ -12,7 +12,27 @@
 
 #include "minishell.h"
 
-void	check_dollor_sign(char **str, t_minfo *info)
+static int	check_env_content(t_minfo *info, char *tmp, char **str)
+{
+	int i;
+
+	i = 0;
+	while (info->env[i])
+	{
+		if (!ft_strncmp(info->env[i], tmp, ft_strlen(tmp)))
+		{
+			free(*str);
+			*str = NULL;
+			*str = ft_strsub(info->env[i], ft_strlen(tmp) + 1, \
+				((int)ft_strlen(info->env[i]) - ft_strlen(tmp) - 1));
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+void		check_dollor_sign(char **str, t_minfo *info)
 {
 	int		i;
 	char	*tmp;
@@ -24,18 +44,7 @@ void	check_dollor_sign(char **str, t_minfo *info)
 	if (*str[0] == '$')
 	{
 		tmp = ft_strsub(*str, 1, (ft_strlen(*str) - 1));
-		while (info->env[i])
-		{
-			if (!ft_strncmp(info->env[i], tmp, ft_strlen(tmp)))
-			{
-				find = 1;
-				free(*str);
-				*str = NULL;
-				*str = ft_strsub(info->env[i], ft_strlen(tmp) + 1, ((int)ft_strlen(info->env[i]) - ft_strlen(tmp) - 1));
-			}
-			i++;
-		}
-		if (!find)
+		if (!check_env_content(info, tmp, str))
 		{
 			free(*str);
 			*str = NULL;
@@ -45,7 +54,7 @@ void	check_dollor_sign(char **str, t_minfo *info)
 	free(tmp);
 }
 
-void	add_cmd(char *pre, char *cmd, char **path)
+void		add_cmd(char *pre, char *cmd, char **path)
 {
 	char	*tmp;
 
@@ -54,7 +63,7 @@ void	add_cmd(char *pre, char *cmd, char **path)
 	free(tmp);
 }
 
-char	*ck_cmd(t_minfo *info)
+char		*ck_cmd(t_minfo *info)
 {
 	struct stat	sb;
 	int			i;
@@ -81,7 +90,7 @@ char	*ck_cmd(t_minfo *info)
 	return (info->cmd_path);
 }
 
-int		get_cmd_path(t_minfo *info)
+int			get_cmd_path(t_minfo *info)
 {
 	struct stat s;
 

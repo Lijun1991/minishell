@@ -12,33 +12,51 @@
 
 #include "minishell.h"
 
+int		ck_env_content(t_minfo *info, int *i)
+{
+	int find;
+
+	find = 0;
+	*i = 0;
+	while (info->env[*i])
+	{
+		if (!ft_strncmp(info->av[1], info->env[*i], ft_strlen(info->av[1])))
+			find = 1;
+		(*i)++;
+	}
+	return (find);
+}
+
+int		ck_n_replace_env(t_minfo *info, const char *env_key, \
+	char *new_env_kv, int *i)
+{
+	*i = 0;
+	while (info->env[*i])
+	{
+		if (!ft_strncmp(info->env[*i], env_key, ft_strlen(env_key)))
+		{
+			free(info->env[*i]);
+			info->env[*i] = ft_strdup(new_env_kv);
+			free(new_env_kv);
+			return (1);
+		}
+		(*i)++;
+	}
+	return (0);
+}
+
 void	buitin_setenv(t_minfo *info, const char *env_key, const char *env_value)
 {
 	int		i;
 	char	*new_env_kv;
-	int		find;
 	char	**new_env;
 
-	i = 0;
-	find = 0;
 	new_env = NULL;
-	if (env_value)
-		new_env_kv = ft_strcjoin(env_key, env_value, '=');
+	new_env_kv = env_value ? ft_strcjoin(env_key, env_value, '=') :
+							ft_strjoin(env_key, "=");
+	if (ck_n_replace_env(info, env_key, new_env_kv, &i))
+		return ;
 	else
-		new_env_kv = ft_strjoin(env_key, "=");
-	while (info->env[i])
-	{
-		if (!ft_strncmp(info->env[i], env_key, ft_strlen(env_key)))
-		{
-			find = 1;
-			free(info->env[i]);
-			info->env[i] = ft_strdup(new_env_kv);
-			free(new_env_kv);
-			return ;
-		}
-		i++;
-	}
-	if (!find)
 	{
 		new_env = (char**)malloc(sizeof(char*) * (i + 2));
 		i = 0;
@@ -89,7 +107,8 @@ int		handle_executable_file(t_minfo *info, int len)
 	err = stat(info->av[len - 1], &s);
 	if (err == -1)
 	{
-		ft_fprintf(2, "minishell: no such file or directory: %s\n", info->av[len - 1]);
+		ft_fprintf(2, "minishell: no such file or directory: %s\n", \
+			info->av[len - 1]);
 		info->sign = 1;
 	}
 	else if (!(err = access(info->av[len - 1], X_OK)))

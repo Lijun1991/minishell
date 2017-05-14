@@ -6,7 +6,7 @@
 #    By: lwang <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/04 00:43:43 by lwang             #+#    #+#              #
-#    Updated: 2017/05/04 00:43:45 by lwang            ###   ########.fr        #
+#    Updated: 2017/05/14 15:12:55 by lwang            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ OBJ = $(SRC:.c=.o)
 
 
 CFLAGS = -Wall -Wextra -Werror -g -Ilibft
+.PHONY: all clean fclean re
 
 $(NAME): $(OBJ)
 	make -C ./libft
