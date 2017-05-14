@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int		count_qoute(char *line)
+static int	count_qoute(char *line)
 {
 	int i;
 	int count;
@@ -32,7 +32,7 @@ static int		count_qoute(char *line)
 	return (0);
 }
 
-char	**handle_qoated(char *line)
+static char	**handle_qoated(char *line)
 {
 	char **av;
 	char **tmp;
@@ -53,15 +53,42 @@ char	**handle_qoated(char *line)
 	return (av);
 }
 
-int		parse_line(t_minfo *info)
+static void	repalce_tilde_sign(char **str, t_minfo *info)
 {
-	char **av;
+	char *tmp;
 
+	tmp = NULL;
+	if ((tmp = ft_strchr(*str, '~')))
+	{
+		tmp = ft_strsub(*str, 1, ft_strlen(*str) - 1);
+		if (info->home)
+		{
+			free(*str);
+			*str = NULL;
+			*str = ft_strjoin(info->home, tmp);
+		}
+		else
+			*str = ft_strdup("");
+	}
+	free(tmp);
+}
+
+int			parse_line(t_minfo *info)
+{
+	char	**av;
+	int		i;
+
+	i = 0;
 	recheck_env_path(info);
 	av = NULL;
 	av = handle_qoated(info->line);
 	if (!av)
 		return (1);
+	while (av[i])
+	{
+		repalce_tilde_sign(&av[i], info);
+		i++;
+	}
 	info->av = av;
 	if (info->av[0])
 		info->cmd = ft_strdup(info->av[0]);
@@ -69,5 +96,3 @@ int		parse_line(t_minfo *info)
 		info->cmd = ft_strdup("");
 	return (0);
 }
-
-

@@ -71,7 +71,7 @@ int		get_cmd_path(t_minfo *info)
 {
 	struct stat s;
 
-	if (ft_strchr(info->cmd, '/') )
+	if (ft_strcmp(info->cmd, "/") && ft_strchr(info->cmd, '/'))
 	{
 		info->cmd_path = ft_strdup(info->cmd);
 		if (stat(info->cmd_path, &s) == -1)
@@ -92,7 +92,9 @@ int		get_cmd_path(t_minfo *info)
 	else if (info->env && ck_cmd(info))
 		return (0);
 	else
+	{
 		return (1);
+	}
 	return (0);
 }
 

@@ -12,42 +12,54 @@
 
 #include "minishell.h"
 
-// int		check_dollar_sign(char *s, t_minfo *info)
-// {
-// 	int i;
-// 	char	*tmp;
+void	check_dollor_sign(char **str, t_minfo *info)
+{
+	int		i;
+	char	*tmp;
+	int		find;
 
-// 	i = 0;
-// 	tmp = NULL;
-// 	if (s[0] == '$')
-// 	{
-// 		s++;
-// 		while (info->env[i])
-// 		{
-// 			if (!ft_strncmp(info->env[i], s, 4))
-// 				tmp = ft_strsub(info->env[i], 5, ((int)ft_strlen(info->env[i]) - 5));
-// 			i++;
-// 		}
-// 	}
-// 	s = tmp;
-// 	return (0);
-// }
+	i = 0;
+	tmp = NULL;
+	find = 0;
+	if (*str[0] == '$')
+	{
+		tmp = ft_strsub(*str, 1, (ft_strlen(*str) - 1));
+		while (info->env[i])
+		{
+			if (!ft_strncmp(info->env[i], tmp, ft_strlen(tmp)))
+			{
+				find = 1;
+				free(*str);
+				*str = NULL;
+				*str = ft_strsub(info->env[i], ft_strlen(tmp) + 1, ((int)ft_strlen(info->env[i]) - ft_strlen(tmp) - 1));
+			}
+			i++;
+		}
+		if (!find)
+		{
+			free(*str);
+			*str = NULL;
+			*str = ft_strdup("");
+		}
+	}
+	free(tmp);
+}
 
 int		buitin_cmd_echo(t_minfo *info)
 {
 	int		i;
 
 	i = 1;
+	recheck_env_path(info);
 	while (info->av[i])
 	{
-		// if (check_dollar_sign(info->av[i], info))
-		// 	return (1);
-		
+		check_dollor_sign(&info->av[i], info);
 		ft_printf(info->av[i + 1] ? "%s " : "%s\n", info->av[i]);
 		i++;
 	}
 	return (0);
 }
+
 
 int		buitin_cmd_cd(t_minfo *info)
 {
@@ -61,7 +73,7 @@ int		buitin_cmd_cd(t_minfo *info)
 	recheck_env_path(info);
 	if (!info->home || !ft_strcmp(info->home, ""))
 		info->home = ft_strdup(pwd);
-	dir = info->av[1] == NULL ? info->home : info->av[1];
+	dir = info->av[1] == NULL || !ft_strcmp(info->av[1], "") ? info->home : info->av[1];
 	err = stat(dir, &s);
 	if (err == -1)
 		ft_fprintf(2, "cd: no such file or directory: %s\n", dir);
@@ -85,15 +97,9 @@ int		buitin_cmd_env(t_minfo *info)
 	int		len;
 	
 	len = 0;
-	recheck_env_path(info);
-	if (!info->env_path || !ft_strcmp(info->env_path, ""))
-	{
-		ft_fprintf(2, "minishell: command not found: %s\n", info->cmd);
-		return (0);
-	}
 	while (info->av[len])
 		len++;
-	if (len == 1 && ft_strcmp(info->env_path, "") && info->env_path)
+	if (len == 1)
 		print_env(info);
 	else if (len > 1 && ft_strchr(info->av[len - 1], '/'))
 	{

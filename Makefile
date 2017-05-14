@@ -13,7 +13,7 @@
 NAME = minishell
 
 SRC = main.c minishell.c get_info.c free.c parse_line.c handle_quotes.c\
-handle_buildin_cmd.c helper.c handle_env.c get_cmd_path.c
+handle_buildin_cmd.c helper.c handle_env.c get_cmd_path.c prompt.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -26,14 +26,12 @@ $(NAME): $(OBJ)
 
 all: $(NAME)
 
-$(OBJ): minishell.h
-
 clean:
 	make -C ./libft clean
-	rm -f *.o
+	rm -f $(OBJ)
 
 fclean:
 	make -C ./libft fclean
-	rm -f $(NAME)
+	rm -f $(OBJ) $(NAME)
 
-re: fclean all
+re: fclean $(NAME)

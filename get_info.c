@@ -24,13 +24,12 @@ int		copy_env(char **env, t_minfo *info)
 	i = 0;
 	while (env[i])
 	{
-		info->env[i] = ft_strdup(env[i]);//..
+		info->env[i] = ft_strdup(env[i]);
 		i++;
 	}
 	info->env[i] = NULL;
 	return (0);
 }
-
 
 int		get_info(char **av, char **env, t_minfo *info)
 {
@@ -43,4 +42,3 @@ int		get_info(char **av, char **env, t_minfo *info)
 	handle_env_path(info);
 	return (0);
 }
-

@@ -71,6 +71,8 @@ static int		run_command(t_minfo *info)
 	}
 	else if (!ft_strcmp(info->cmd, ""))
 		info->sign = 0;
+	else if (!ft_strcmp(info->cmd, "~"))
+		info->sign = 0;
 	else if (!get_cmd_path(info))
 	{
 		if (exc_command(info))

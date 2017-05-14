@@ -69,28 +69,14 @@ void	recheck_env_path(t_minfo *info)
 	handle_env_path(info);
 }
 
-void	handle_prompt(int sign, t_minfo *info)
+int		get_len(char **s)
 {
-	char	buf[MAX_PATH_LENGTH + 1];
-	char	*pwd;
+	int i;
 
-	pwd = getcwd(buf, MAX_PATH_LENGTH);
-	if (sign)
-	{
-		recheck_env_path(info);
-		if (info->home && !ft_strcmp(pwd, info->home))
-			ft_printf(RED"$~"CLN);
-		else
-			ft_printf(RED"$>"CLN);
-	}
-	else
-	{
-		recheck_env_path(info);
-		if (info->home && !ft_strcmp(pwd, info->home))
-			ft_printf("$~");
-		else
-			ft_printf("$>");
-	}
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
 }
 
 int		print_env(t_minfo *info)
